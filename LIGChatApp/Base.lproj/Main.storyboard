@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11134" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="7kn-JQ-yQF">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11106"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Chat app-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="LoginViewController" customModule="LIGChatApp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -16,11 +20,133 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="User name" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="15e-LH-OuZ" customClass="PaddedTextField" customModule="LIGChatApp" customModuleProvider="target">
+                                <rect key="frame" x="10" y="94" width="355" height="40"/>
+                                <color key="backgroundColor" red="0.96078431372549022" green="0.97254901960784312" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="jlx-hR-qDf"/>
+                                </constraints>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="insetX">
+                                        <real key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="insetY">
+                                        <real key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" usesAttributedText="YES" placeholder="password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="m1J-QR-dOJ" customClass="PaddedTextField" customModule="LIGChatApp" customModuleProvider="target">
+                                <rect key="frame" x="10" y="154" width="355" height="40"/>
+                                <color key="backgroundColor" red="0.96078431369999995" green="0.97254901959999995" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="Y1c-Qy-BkX"/>
+                                </constraints>
+                                <attributedString key="attributedText"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="go" secureTextEntry="YES"/>
+                            </textField>
+                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n1K-iR-giQ" customClass="LoaderButton" customModule="LIGChatApp" customModuleProvider="target">
+                                <rect key="frame" x="10" y="214" width="355" height="40"/>
+                                <color key="backgroundColor" red="0.53333333333333333" green="0.8901960784313725" blue="0.023529411764705882" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="uIg-ye-5Qq"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Sign up / Log in">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="tapSignupOrLoginButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7Yy-CN-Xlf"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FBa-KK-Y0Y">
+                                <rect key="frame" x="10" y="274" width="355" height="76"/>
+                                <attributedString key="attributedText">
+                                    <fragment>
+                                        <string key="content">By signing up, you agree to the Terms of Service and Privacy Policy, including Cookie Use. Others will be able to find you by searching for your email address or phone number when provided.</string>
+                                        <attributes>
+                                            <color key="NSColor" red="0.39215686274509803" green="0.46666666666666667" blue="0.52941176470588236" alpha="1" colorSpace="calibratedRGB"/>
+                                            <font key="NSFont" size="13" name=".AppleSystemUIFont"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="4.5" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="n1K-iR-giQ" secondAttribute="trailing" constant="10" id="ASZ-kE-xmt"/>
+                            <constraint firstItem="m1J-QR-dOJ" firstAttribute="top" secondItem="15e-LH-OuZ" secondAttribute="bottom" constant="20" id="Dzc-4m-UMZ"/>
+                            <constraint firstItem="FBa-KK-Y0Y" firstAttribute="top" secondItem="n1K-iR-giQ" secondAttribute="bottom" constant="20" id="EkD-YJ-cF8"/>
+                            <constraint firstItem="n1K-iR-giQ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="10" id="EnV-cT-yHP"/>
+                            <constraint firstAttribute="trailing" secondItem="m1J-QR-dOJ" secondAttribute="trailing" constant="10" id="GOw-yk-8oW"/>
+                            <constraint firstItem="FBa-KK-Y0Y" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="10" id="KXH-Sx-qfR"/>
+                            <constraint firstItem="n1K-iR-giQ" firstAttribute="top" secondItem="m1J-QR-dOJ" secondAttribute="bottom" constant="20" id="aHh-sy-VDN"/>
+                            <constraint firstAttribute="trailing" secondItem="15e-LH-OuZ" secondAttribute="trailing" constant="10" id="cvV-ND-8T6"/>
+                            <constraint firstItem="15e-LH-OuZ" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="30" id="dOK-Ne-OVg"/>
+                            <constraint firstAttribute="trailing" secondItem="FBa-KK-Y0Y" secondAttribute="trailing" constant="10" id="jhc-tL-yrW"/>
+                            <constraint firstItem="15e-LH-OuZ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="10" id="n1T-uo-Vz9"/>
+                            <constraint firstItem="m1J-QR-dOJ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="10" id="vAV-Ce-mDf"/>
+                        </constraints>
                     </view>
+                    <navigationItem key="navigationItem" title="Chat app" id="pe6-Zr-9np"/>
+                    <connections>
+                        <outlet property="passwordTextField" destination="m1J-QR-dOJ" id="O4d-hg-ugg"/>
+                        <outlet property="signupOrLoginButton" destination="n1K-iR-giQ" id="yMK-SR-gL3"/>
+                        <outlet property="usernameTextField" destination="15e-LH-OuZ" id="atr-gN-5nR"/>
+                        <segue destination="g3v-zr-dXk" kind="show" identifier="LoginToChat" id="JJt-qT-Ki6"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="898.39999999999998" y="-645.42728635682158"/>
+        </scene>
+        <!--Title-->
+        <scene sceneID="spX-V9-lcw">
+            <objects>
+                <viewController id="g3v-zr-dXk" customClass="ChatViewController" customModule="LIGChatApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="OBP-Yz-68U"/>
+                        <viewControllerLayoutGuide type="bottom" id="SFQ-n2-b5x"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="0Or-uK-nNh">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Title" id="40x-wd-ard">
+                        <barButtonItem key="rightBarButtonItem" title="Logout" id="Dhb-Fm-3bz">
+                            <connections>
+                                <action selector="tapLogoutButton:" destination="g3v-zr-dXk" id="rmf-vI-0Vh"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xKd-5I-n0N" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1625" y="-645"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="HJc-RJ-5aU">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="7kn-JQ-yQF" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="ApS-4X-UpQ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="VnU-YX-0P0"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="o5V-4H-NHf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="141.59999999999999" y="-645.42728635682158"/>
         </scene>
     </scenes>
 </document>
