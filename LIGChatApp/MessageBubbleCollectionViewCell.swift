@@ -10,9 +10,6 @@ import UIKit
 
 class MessageBubbleCollectionViewCell: UICollectionViewCell {
 	
-//	@IBOutlet weak var messageLabel: UILabel!
-//	@IBOutlet weak var messageBubbleView: SpeechBubbleView!
-	
 	let messageLabel: UILabel = {
 		let label = UILabel()
 		label.font = UIFont.systemFont(ofSize: 14)
@@ -32,9 +29,9 @@ class MessageBubbleCollectionViewCell: UICollectionViewCell {
 	
 	let senderNameLabel: UILabel = {
 		let label = UILabel()
-		label.font = UIFont.systemFont(ofSize: 12)
+		label.font = UIFont.systemFont(ofSize: 14)
 		label.numberOfLines = 1
-		label.textColor = UIColor.gray
+		label.textColor = UIColor(hexString: "#445361")
 		return label
 	}()
 	
@@ -42,12 +39,7 @@ class MessageBubbleCollectionViewCell: UICollectionViewCell {
 		super.awakeFromNib()
 		
 		self.backgroundColor = UIColor.clear
-		
-		// Initialization code
 		self.messageLabel.sizeToFit()
-		
-//		self.messageBubbleView.layer.cornerRadius = 8
-//		self.messageBubbleView.backgroundColor = UIColor(hexString: "#88e306")
 	}
 	
 	override init(frame: CGRect) {
@@ -60,5 +52,11 @@ class MessageBubbleCollectionViewCell: UICollectionViewCell {
 		self.messageBubbleView.addSubview(messageLabel)
 		self.addSubview(messageBubbleView)
 		self.addSubview(senderNameLabel)
+	}
+	
+	override func prepareForReuse() {
+		super.prepareForReuse()
+		
+		print("reuse \(messageLabel.text)")
 	}
 }

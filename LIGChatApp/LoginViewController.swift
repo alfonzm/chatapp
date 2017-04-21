@@ -38,13 +38,6 @@ class LoginViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		// Check if there is a currently logged in user
-//		if FIRAuth.auth()?.currentUser != nil {
-//			self.performSegue(withIdentifier: "LoginToChat", sender: nil)
-//		} else {
-//			print("not logged in")
-//		}
-		
 		authHandle = FIRAuth.auth()?.addStateDidChangeListener() { (auth, user) in
 			print("STATE DID CHANGE AUTH")
 			print(user?.email ?? "email test")
@@ -70,21 +63,53 @@ class LoginViewController: UIViewController {
 			FIRAuth.auth()?.signIn(withEmail: email, password: password) { (user, error) in
 				if user != nil {
 					// Login successful
-					let chatNavController = self.storyboard!.instantiateViewController(withIdentifier: "ChatNavController") as! UINavigationController
-					
-					self.present(chatNavController, animated: false, completion: nil)
+					self.presentChatView()
 				} else if error != nil {
-					// Login failed, alert user for incorrect credentials
-					let alertController = UIAlertController(title: "Please try again", message:"The username or password you entered did not match our records. Please double-check and try again.", preferredStyle: .alert)
+					// User not found, alert user to create new account
+					let createAccountAlert = UIAlertController(title: "Create Account?", message:"The username or password you entered did not match our records. Would you like to sign up this account?", preferredStyle: .alert)
 					
-					let tryAgainAction = UIAlertAction(title: "Try Again", style: .cancel, handler: nil)
-					alertController.addAction(tryAgainAction)
 					
-					self.present(alertController, animated: true, completion: nil)
+					createAccountAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
+						self.enableSignupLoginButton()
+						self.signupOrLoginButton.hideLoading()
+					}))
+					
+					createAccountAlert.addAction(UIAlertAction(title: "Sign Up", style: .default, handler: { (action: UIAlertAction!) in
+						FIRAuth.auth()?.createUser(withEmail: email, password: password, completion: { (user, error) in
+							if user != nil {
+								self.presentChatView()
+							} else if error != nil {
+								print(error)
+								
+								var errorMessage: String = ""
+								if let errCode = FIRAuthErrorCode(rawValue: error!._code) {
+									switch errCode {
+									case .errorCodeInvalidEmail:
+										errorMessage = "The username you entered contains invalid characters. Please try again."
+										
+									case .errorCodeEmailAlreadyInUse:
+										errorMessage = "The e-mail address is already in use."
+										
+									case .errorCodeWeakPassword:
+										errorMessage = "Please enter a password with at least 6 characters."
+										
+									default:
+										print("There was a problem signing up your account. Please try again.")
+									}
+								}
+								
+								let signupErrorAlert = UIAlertController(title: "Sign Up Unsuccessful", message: errorMessage, preferredStyle: .alert)
+								signupErrorAlert.addAction(UIAlertAction(title: "Try Again", style: .cancel, handler: nil))
+								self.present(signupErrorAlert, animated: true, completion: nil)
+								
+								self.enableSignupLoginButton()
+								self.signupOrLoginButton.hideLoading()
+							}
+						})
+					}))
+					
+					self.present(createAccountAlert, animated: true, completion: nil)
 				}
-				
-				self.enableSignupLoginButton()
-				self.signupOrLoginButton.hideLoading()
 			}
 		} else {
 			// Alert user that username or password field is empty
@@ -101,6 +126,12 @@ class LoginViewController: UIViewController {
 	}
 
 	// MARK: Utility/helper functions
+	func presentChatView(){
+		let chatNavController = self.storyboard!.instantiateViewController(withIdentifier: "ChatCollectionNavController") as! UINavigationController
+		
+		self.present(chatNavController, animated: false, completion: nil)
+	}
+	
 	func isUsernameAndPasswordFieldsNotEmpty() -> Bool {
 		if let username = self.usernameTextField.text, let password = self.passwordTextField.text,
 			!username.isEmpty, !password.isEmpty {

@@ -27,7 +27,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="jlx-hR-qDf"/>
                                 </constraints>
-                                <color key="textColor" red="0.39215686274509803" green="0.46666666666666667" blue="0.52941176470588236" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.26666666666666666" green="0.32549019607843138" blue="0.38039215686274508" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
                             </textField>
@@ -37,7 +37,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="Y1c-Qy-BkX"/>
                                 </constraints>
-                                <color key="textColor" red="0.3921568627" green="0.46666666670000001" blue="0.52941176469999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.26666666666666666" green="0.32549019607843138" blue="0.38039215686274508" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="go" secureTextEntry="YES"/>
                             </textField>
@@ -61,7 +61,7 @@
                                     <fragment>
                                         <string key="content">By signing up, you agree to the Terms of Service and Privacy Policy, including Cookie Use. Others will be able to find you by searching for your email address or phone number when provided.</string>
                                         <attributes>
-                                            <color key="NSColor" red="0.39215686274509803" green="0.46666666666666667" blue="0.52941176470588236" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="NSColor" red="0.26666666666666666" green="0.32549019607843138" blue="0.38039215686274508" alpha="1" colorSpace="calibratedRGB"/>
                                             <font key="NSFont" size="13" name=".AppleSystemUIFont"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="4.5" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
@@ -180,11 +180,11 @@
                         <viewControllerLayoutGuide type="bottom" id="mIa-yr-LPF"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="7Cm-Bj-73J">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="4kr-CG-fPI">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="555"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="AXN-0Q-fm8">
                                     <size key="itemSize" width="50" height="50"/>
@@ -198,25 +198,74 @@
                                     <outlet property="delegate" destination="XxY-EW-dmh" id="0X8-LO-RoZ"/>
                                 </connections>
                             </collectionView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2K9-tg-Ihn" customClass="BorderedTopView" customModule="LIGChatApp" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="555" width="375" height="48"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fTW-eP-dAZ">
+                                        <rect key="frame" x="317" y="10" width="48" height="28"/>
+                                        <color key="backgroundColor" red="0.32549019607843138" green="0.32549019607843138" blue="0.32549019607843138" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="48" id="Y15-yl-psJ"/>
+                                        </constraints>
+                                        <state key="normal">
+                                            <attributedString key="attributedTitle">
+                                                <fragment content="send">
+                                                    <attributes>
+                                                        <color key="NSColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <font key="NSFont" size="14" name=".AppleSystemUIFont"/>
+                                                    </attributes>
+                                                </fragment>
+                                            </attributedString>
+                                        </state>
+                                        <connections>
+                                            <action selector="sendButtonAction:" destination="XxY-EW-dmh" eventType="touchUpInside" id="1IN-aE-mbr"/>
+                                        </connections>
+                                    </button>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Start a message" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="UgC-e5-aLx">
+                                        <rect key="frame" x="10" y="10" width="297" height="28"/>
+                                        <color key="backgroundColor" red="0.96078431372549022" green="0.97254901960784312" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="textColor" red="0.26666666666666666" green="0.32549019607843138" blue="0.38039215686274508" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no"/>
+                                    </textView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="UgC-e5-aLx" secondAttribute="bottom" constant="10" id="FNv-9T-dbG"/>
+                                    <constraint firstItem="UgC-e5-aLx" firstAttribute="top" secondItem="2K9-tg-Ihn" secondAttribute="top" constant="10" id="HwT-Ke-Thb"/>
+                                    <constraint firstAttribute="trailing" secondItem="fTW-eP-dAZ" secondAttribute="trailing" constant="10" id="boa-rh-hMb"/>
+                                    <constraint firstItem="fTW-eP-dAZ" firstAttribute="top" secondItem="2K9-tg-Ihn" secondAttribute="top" constant="10" id="ddF-4V-CgL"/>
+                                    <constraint firstItem="UgC-e5-aLx" firstAttribute="leading" secondItem="2K9-tg-Ihn" secondAttribute="leading" constant="10" id="dtf-7u-gkb"/>
+                                    <constraint firstItem="fTW-eP-dAZ" firstAttribute="leading" secondItem="UgC-e5-aLx" secondAttribute="trailing" constant="10" id="m9G-mQ-LJq"/>
+                                    <constraint firstAttribute="bottom" secondItem="fTW-eP-dAZ" secondAttribute="bottom" constant="10" id="ozY-E5-KK2"/>
+                                    <constraint firstAttribute="height" constant="48" id="sEn-8j-Ex1"/>
+                                </constraints>
+                            </view>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="G6x-tt-KGE">
+                                <rect key="frame" x="177" y="267.5" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="2K9-tg-Ihn" firstAttribute="top" secondItem="4kr-CG-fPI" secondAttribute="bottom" id="D9u-Ge-RQD"/>
+                            <constraint firstAttribute="trailing" secondItem="2K9-tg-Ihn" secondAttribute="trailing" id="HdV-xZ-CAq"/>
+                            <constraint firstItem="G6x-tt-KGE" firstAttribute="centerX" secondItem="7Cm-Bj-73J" secondAttribute="centerX" id="Nub-Wo-ri0"/>
                             <constraint firstItem="4kr-CG-fPI" firstAttribute="leading" secondItem="7Cm-Bj-73J" secondAttribute="leading" id="SPJ-4W-Lrw"/>
                             <constraint firstItem="4kr-CG-fPI" firstAttribute="top" secondItem="5m9-Iu-njT" secondAttribute="bottom" id="hBI-5P-0x9"/>
                             <constraint firstAttribute="trailing" secondItem="4kr-CG-fPI" secondAttribute="trailing" id="jEH-pv-15p"/>
-                            <constraint firstItem="mIa-yr-LPF" firstAttribute="top" secondItem="4kr-CG-fPI" secondAttribute="bottom" id="kxw-9e-WkB"/>
+                            <constraint firstItem="mIa-yr-LPF" firstAttribute="top" secondItem="2K9-tg-Ihn" secondAttribute="bottom" id="pUT-XG-alt"/>
+                            <constraint firstItem="2K9-tg-Ihn" firstAttribute="leading" secondItem="7Cm-Bj-73J" secondAttribute="leading" id="u9h-6X-7Q3"/>
+                            <constraint firstItem="G6x-tt-KGE" firstAttribute="centerY" secondItem="4kr-CG-fPI" secondAttribute="centerY" id="yRI-Ze-5g3"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Chat app" id="Za7-re-gJa">
-                        <barButtonItem key="rightBarButtonItem" title="Logout" id="gW3-EQ-tkr">
-                            <connections>
-                                <action selector="logoutButtonAction:" destination="XxY-EW-dmh" id="cky-ff-Uou"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Log out" id="gW3-EQ-tkr"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="activityIndicator" destination="G6x-tt-KGE" id="mRI-Rh-ptz"/>
                         <outlet property="collectionView" destination="4kr-CG-fPI" id="kPE-X3-QgJ"/>
-                        <outlet property="logoutButton" destination="gW3-EQ-tkr" id="k3I-IB-aNv"/>
+                        <outlet property="messageTextView" destination="UgC-e5-aLx" id="pbB-MV-Ahb"/>
+                        <outlet property="sendButton" destination="fTW-eP-dAZ" id="M4a-6K-tr0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CFK-Mc-bcj" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -228,7 +277,7 @@
             <objects>
                 <navigationController storyboardIdentifier="ChatCollectionNavController" automaticallyAdjustsScrollViewInsets="NO" id="Xvd-az-MFw" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="STt-nB-OWy">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="STt-nB-OWy">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

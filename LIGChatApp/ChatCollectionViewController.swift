@@ -10,10 +10,11 @@ import UIKit
 import FirebaseDatabase
 import FirebaseAuth
 
-class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
-	
-	@IBOutlet weak var logoutButton: UIBarButtonItem!
+class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITextViewDelegate {
 	@IBOutlet weak var collectionView: UICollectionView!
+	@IBOutlet weak var messageTextView: UITextView!
+	@IBOutlet weak var sendButton: UIButton!
+	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
 	let reuseIdentifier = "messageBubbleCell"
 
@@ -24,16 +25,43 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 	// Chat stuff
 	var messages = [Message]()
 	var senderId: String = ""
-	var senderDisplayName: String?
+	var senderDisplayName: String = ""
+	let placeholderText = "Start a new message"
 	
     override func viewDidLoad() {
         super.viewDidLoad()
 		
+		// setup textview placeholder
+		self.messageTextView.delegate = self
+		self.setTextViewToPlaceholder()
+		
+		// create a custom logout button
+		let customLogoutButton: UIButton = UIButton(type: .custom)
+		customLogoutButton.setTitle("Log out", for: .normal)
+		customLogoutButton.layer.backgroundColor = UIColor(hexString: "#535353").cgColor
+		customLogoutButton.setTitle("Log out", for: .normal)
+		customLogoutButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+		customLogoutButton.layer.cornerRadius = 8
+		customLogoutButton.frame = CGRect(x: 0, y: 0, width: 67, height: 28)
+		
+		customLogoutButton.addTarget(self, action: #selector(logoutButtonAction), for: .touchUpInside)
+		
+		let logoutBarButtonItem = UIBarButtonItem(customView: customLogoutButton)
+		self.navigationItem.rightBarButtonItem = logoutBarButtonItem
+		
+		// style the send button
+		self.sendButton.layer.cornerRadius = 8
+		self.sendButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+		
+		// style the text view
+		self.messageTextView.layer.cornerRadius = 5
+		
 		// Set current Firebase user
 		let currentUser = FIRAuth.auth()?.currentUser
 		self.senderId = currentUser!.uid
-		self.senderDisplayName = currentUser!.email
+		self.senderDisplayName = currentUser!.email!.replacingOccurrences(of: "@ligchatapp.com", with: "")
 		
+		// Firebase messages reference
 		self.messagesRef = FIRDatabase.database().reference().child("messages")
 		
 		// load existing messages
@@ -41,31 +69,43 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 		
 		// observe for new messages
 		observeMessages()
-
-		// scroll to bottom
-//		let item = self.collectionView(self.collectionView!, numberOfItemsInSection: 0) - 1
-//		let lastItemIndex = IndexPath(item: item, section: 0)
-//		collectionView?.scrollToItem(at: lastItemIndex, at: UICollectionViewScrollPosition.top, animated: true)
 		
-		// Register nibs for collection view
-		self.collectionView.register(UINib(nibName: "MessageBubbleCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: reuseIdentifier)
+		// Register collection view cell
+		self.collectionView.register(UINib(nibName: "MessageBubbleCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: self.reuseIdentifier)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-    
+	}
+	
+	// MARK: UITextView delegate
+	func textViewDidBeginEditing(_ textView: UITextView) {
+		if self.messageTextView.text == placeholderText {
+			self.messageTextView.text = ""
+		}
+		
+		self.messageTextView.becomeFirstResponder()
+	}
+	
+	func textViewDidEndEditing(_ textView: UITextView) {
+		if self.messageTextView.text == "" {
+			self.setTextViewToPlaceholder()
+		}
+	}
+	
+	func setTextViewToPlaceholder() {
+		self.messageTextView.text = placeholderText
+	}
+	
 
 	// MARK: UICollectionViewDataSource 
 	public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 		// get a reference to our storyboard cell
 		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! MessageBubbleCollectionViewCell
 		
-		
 		let message = self.messages[indexPath.item]
 		
-		print(message.senderName)
 		cell.messageLabel.text = message.text
 		cell.senderNameLabel.text = message.senderName
 		
@@ -89,6 +129,9 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 			// if outgoing, align the bubble to the right
 			messageBubbleXPosition = self.view.frame.width - estimatedFrame.width - (labelHorizontalPadding * 2) - tailWidth - bubbleMargin
 			messageSenderXPosition = messageBubbleXPosition
+			
+			
+			cell.senderNameLabel.textAlignment = .right
 		} else {
 			cell.messageBubbleView.type = .incoming
 			
@@ -101,7 +144,7 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 		
 		cell.messageLabel.frame = CGRect(x: messageLabelXPosition, y: labelVerticalPadding, width: estimatedFrame.width, height: estimatedFrame.height)
 		cell.messageBubbleView.frame = CGRect(x: messageBubbleXPosition, y: 0, width: estimatedFrame.width + (labelHorizontalPadding * 2) + tailWidth, height: estimatedFrame.height + (labelVerticalPadding * 2))
-		cell.senderNameLabel.frame = CGRect(x: messageSenderXPosition, y: cell.messageBubbleView.frame.maxY + 5, width: self.view.frame.width - 10, height: 14)
+		cell.senderNameLabel.frame = CGRect(x: 10, y: cell.messageBubbleView.frame.maxY + 5, width: self.view.frame.width - 20, height: 14)
 		
 //		cell.backgroundColor = UIColor.cyan
 		
@@ -109,7 +152,6 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize {
-		
 		let messageText = self.messages[indexPath.item].text
 		let size = CGSize(width: 200, height: 1000)
 		let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
@@ -122,15 +164,38 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 		return self.messages.count
 	}
 	
+	public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+		return UIEdgeInsetsMake(20, 0, 0, 0)
+	}
+	
 	// MARK: IBActions
+	@IBAction func sendButtonAction(_ sender: Any) {
+		let messageText: String = self.messageTextView.text
+		self.addMessage(withString: messageText, senderId: self.senderId, name: self.senderDisplayName)
+		
+		let itemRef = messagesRef!.childByAutoId()
+		let messageItem = [
+			"username": self.senderDisplayName,
+			"senderId": self.senderId,
+			"text": messageText,
+			]
+		
+		itemRef.setValue(messageItem)
+		
+		finishSendingMessage()
+		
+		self.messageTextView.text = ""
+	}
+	
 	@IBAction func logoutButtonAction(_ sender: Any) {
-		self.logoutButton.isEnabled = false
+		self.navigationItem.rightBarButtonItem?.isEnabled = false
+		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.lightGray], for: .normal)
 		
 		// Show confirm logout prompt
 		let confirmLogoutAlert = UIAlertController(title: "Confirm Logout", message: "Are you sure you want to logout?", preferredStyle: UIAlertControllerStyle.alert)
 		
 		confirmLogoutAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
-			self.logoutButton.isEnabled = true
+			self.navigationItem.rightBarButtonItem?.isEnabled = true
 		}))
 		
 		confirmLogoutAlert.addAction(UIAlertAction(title: "Log out", style: .destructive, handler: { (action: UIAlertAction!) in
@@ -141,7 +206,7 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 				
 				self.present(loginNavController, animated: true, completion: nil)
 			} catch {
-				self.logoutButton.isEnabled = true
+				self.navigationItem.rightBarButtonItem?.isEnabled = true
 				
 				// Logout failed, show alert
 				let alertController = UIAlertController(title: "Log out failed", message: "There was a problem logging out of your account. Please try again.", preferredStyle: .alert)
@@ -168,6 +233,7 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 					}
 				}
 				self.finishSendingMessage()
+				self.scrollToBottomMessage(true)
 			}
 		})
 	}
@@ -182,8 +248,9 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 					}
 				}
 				
-				//				self.activityIndicator.stopAnimating()
+				self.activityIndicator.stopAnimating()
 				self.finishSendingMessage()
+				self.scrollToBottomMessage()
 			}
 		})
 	}
@@ -194,22 +261,12 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 		self.collectionView.reloadData()
 	}
 	
-	private func showActivityIndicator(){
-		let container: UIView = UIView()
-		container.frame = self.view.frame
-		container.center = self.view.center
-		
-		//Preparing activity indicator to load
-//		self.activityIndicator = UIActivityIndicatorView()
-//		self.activityIndicator.hidesWhenStopped = true
-//		self.activityIndicator.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
-//		self.activityIndicator.center = container.center
-//		self.activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
-//		
-//		container.addSubview(activityIndicator)
-//		self.view.addSubview(container)
-//		
-//		self.activityIndicator.startAnimating()
+	private func scrollToBottomMessage(_ animated: Bool = false) {
+		let lastIndex = self.collectionView.numberOfItems(inSection: 0) - 1
+		if lastIndex > 0 {
+			let lastItemIndexPath = NSIndexPath(item: lastIndex, section: 0)
+			self.collectionView.scrollToItem(at: lastItemIndexPath as IndexPath, at: .bottom, animated: animated)
+		}
 	}
 	
 	private func addMessage(withString text: String, senderId: String, name: String) {

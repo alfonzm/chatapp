@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import IQKeyboardManagerSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -35,6 +36,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		
 		self.window?.rootViewController = initialViewController!
 		self.window?.makeKeyAndVisible()
+		
+		// enable keyboard manager
+		IQKeyboardManager.sharedManager().enable = true
+		IQKeyboardManager.sharedManager().enableAutoToolbar = false
+		IQKeyboardManager.sharedManager().shouldResignOnTouchOutside = true
 		
 		return true
 	}

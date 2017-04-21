@@ -6,4 +6,5 @@ target 'LIGChatApp' do
 	pod 'Firebase/Database'
 	pod 'Firebase/Auth'
 	pod 'JSQMessagesViewController'
+	pod 'IQKeyboardManagerSwift', '4.0.8'
 end
