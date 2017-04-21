@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		
 		// Set the initial view if there's a logged in user
 		if FIRAuth.auth()?.currentUser != nil {
-			initialViewController = storyboard.instantiateViewController(withIdentifier: "ChatNavController")
+			initialViewController = storyboard.instantiateViewController(withIdentifier: "ChatCollectionNavController")
 		} else {
 			initialViewController = storyboard.instantiateViewController(withIdentifier: "LoginNavController")
 		}

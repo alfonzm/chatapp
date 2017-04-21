@@ -11,9 +11,15 @@
 		93105AF51EA656EB001505D7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93105AF31EA656EB001505D7 /* Main.storyboard */; };
 		93105AF71EA656EB001505D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93105AF61EA656EB001505D7 /* Assets.xcassets */; };
 		93105AFA1EA656EB001505D7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93105AF81EA656EB001505D7 /* LaunchScreen.storyboard */; };
+		93460C721EAA0EA3009AC601 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93460C711EAA0EA3009AC601 /* Message.swift */; };
 		9349D35F1EA6588500FFD6CB /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 9349D35E1EA6588500FFD6CB /* Podfile */; };
 		9352481D1EA661910015F822 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9352481C1EA661910015F822 /* LoginViewController.swift */; };
-		93730CC61EA9951D009189FF /* SpeechBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93730CC51EA9951D009189FF /* SpeechBubble.swift */; };
+		93730CC61EA9951D009189FF /* SpeechBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93730CC51EA9951D009189FF /* SpeechBubbleView.swift */; };
+		93730CCE1EA9B610009189FF /* CustomOutgoingCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93730CCC1EA9B610009189FF /* CustomOutgoingCollectionViewCell.swift */; };
+		93730CCF1EA9B610009189FF /* CustomOutgoingCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93730CCD1EA9B610009189FF /* CustomOutgoingCollectionViewCell.xib */; };
+		93730CD31EA9D5FF009189FF /* ChatCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93730CD21EA9D5FF009189FF /* ChatCollectionViewController.swift */; };
+		93730CDE1EA9FA47009189FF /* MessageBubbleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93730CDC1EA9FA47009189FF /* MessageBubbleCollectionViewCell.swift */; };
+		93730CDF1EA9FA47009189FF /* MessageBubbleCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93730CDD1EA9FA47009189FF /* MessageBubbleCollectionViewCell.xib */; };
 		93B7BEF91EA72CED00D2ACB7 /* PaddedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B7BEF81EA72CED00D2ACB7 /* PaddedTextField.swift */; };
 		93BBDE7D1EA8985C003DC88F /* LoaderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BBDE7C1EA8985C003DC88F /* LoaderButton.swift */; };
 		93DA703E1EA7657B005F5D74 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 93DA703D1EA7657B005F5D74 /* GoogleService-Info.plist */; };
@@ -31,9 +37,15 @@
 		93105AF61EA656EB001505D7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		93105AF91EA656EB001505D7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		93105AFB1EA656EB001505D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		93460C711EAA0EA3009AC601 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		9349D35E1EA6588500FFD6CB /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9352481C1EA661910015F822 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		93730CC51EA9951D009189FF /* SpeechBubble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeechBubble.swift; sourceTree = "<group>"; };
+		93730CC51EA9951D009189FF /* SpeechBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeechBubbleView.swift; sourceTree = "<group>"; };
+		93730CCC1EA9B610009189FF /* CustomOutgoingCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomOutgoingCollectionViewCell.swift; sourceTree = "<group>"; };
+		93730CCD1EA9B610009189FF /* CustomOutgoingCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomOutgoingCollectionViewCell.xib; sourceTree = "<group>"; };
+		93730CD21EA9D5FF009189FF /* ChatCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatCollectionViewController.swift; sourceTree = "<group>"; };
+		93730CDC1EA9FA47009189FF /* MessageBubbleCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBubbleCollectionViewCell.swift; sourceTree = "<group>"; };
+		93730CDD1EA9FA47009189FF /* MessageBubbleCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessageBubbleCollectionViewCell.xib; sourceTree = "<group>"; };
 		93B7BEF81EA72CED00D2ACB7 /* PaddedTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaddedTextField.swift; sourceTree = "<group>"; };
 		93BBDE7C1EA8985C003DC88F /* LoaderButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoaderButton.swift; sourceTree = "<group>"; };
 		93DA703D1EA7657B005F5D74 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -83,6 +95,7 @@
 		93105AEE1EA656EB001505D7 /* LIGChatApp */ = {
 			isa = PBXGroup;
 			children = (
+				93730CC71EA9B4DF009189FF /* resources */,
 				93B7BEF51EA72B0E00D2ACB7 /* models */,
 				93105AEF1EA656EB001505D7 /* AppDelegate.swift */,
 				93105AF31EA656EB001505D7 /* Main.storyboard */,
@@ -92,8 +105,20 @@
 				93DA703D1EA7657B005F5D74 /* GoogleService-Info.plist */,
 				9352481C1EA661910015F822 /* LoginViewController.swift */,
 				93DA703F1EA7961F005F5D74 /* ChatViewController.swift */,
+				93730CD21EA9D5FF009189FF /* ChatCollectionViewController.swift */,
 			);
 			path = LIGChatApp;
+			sourceTree = "<group>";
+		};
+		93730CC71EA9B4DF009189FF /* resources */ = {
+			isa = PBXGroup;
+			children = (
+				93730CCC1EA9B610009189FF /* CustomOutgoingCollectionViewCell.swift */,
+				93730CCD1EA9B610009189FF /* CustomOutgoingCollectionViewCell.xib */,
+				93730CDC1EA9FA47009189FF /* MessageBubbleCollectionViewCell.swift */,
+				93730CDD1EA9FA47009189FF /* MessageBubbleCollectionViewCell.xib */,
+			);
+			name = resources;
 			sourceTree = "<group>";
 		};
 		93B7BEF51EA72B0E00D2ACB7 /* models */ = {
@@ -101,7 +126,8 @@
 			children = (
 				93B7BEF81EA72CED00D2ACB7 /* PaddedTextField.swift */,
 				93BBDE7C1EA8985C003DC88F /* LoaderButton.swift */,
-				93730CC51EA9951D009189FF /* SpeechBubble.swift */,
+				93730CC51EA9951D009189FF /* SpeechBubbleView.swift */,
+				93460C711EAA0EA3009AC601 /* Message.swift */,
 			);
 			name = models;
 			sourceTree = "<group>";
@@ -180,6 +206,8 @@
 				93105AFA1EA656EB001505D7 /* LaunchScreen.storyboard in Resources */,
 				93105AF71EA656EB001505D7 /* Assets.xcassets in Resources */,
 				93DA703E1EA7657B005F5D74 /* GoogleService-Info.plist in Resources */,
+				93730CDF1EA9FA47009189FF /* MessageBubbleCollectionViewCell.xib in Resources */,
+				93730CCF1EA9B610009189FF /* CustomOutgoingCollectionViewCell.xib in Resources */,
 				9349D35F1EA6588500FFD6CB /* Podfile in Resources */,
 				93105AF51EA656EB001505D7 /* Main.storyboard in Resources */,
 			);
@@ -240,10 +268,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				93730CD31EA9D5FF009189FF /* ChatCollectionViewController.swift in Sources */,
+				93730CDE1EA9FA47009189FF /* MessageBubbleCollectionViewCell.swift in Sources */,
 				9352481D1EA661910015F822 /* LoginViewController.swift in Sources */,
 				93B7BEF91EA72CED00D2ACB7 /* PaddedTextField.swift in Sources */,
 				93DA70401EA7961F005F5D74 /* ChatViewController.swift in Sources */,
-				93730CC61EA9951D009189FF /* SpeechBubble.swift in Sources */,
+				93730CCE1EA9B610009189FF /* CustomOutgoingCollectionViewCell.swift in Sources */,
+				93730CC61EA9951D009189FF /* SpeechBubbleView.swift in Sources */,
+				93460C721EAA0EA3009AC601 /* Message.swift in Sources */,
 				93105AF01EA656EB001505D7 /* AppDelegate.swift in Sources */,
 				93BBDE7D1EA8985C003DC88F /* LoaderButton.swift in Sources */,
 			);

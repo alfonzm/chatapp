@@ -10,7 +10,6 @@
 
 import UIKit
 
-@IBDesignable
 class PaddedTextField: UITextField {
 	let insetX: CGFloat = 10
 	let insetY: CGFloat = 10

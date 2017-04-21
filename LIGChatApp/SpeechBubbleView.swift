@@ -8,9 +8,16 @@
 
 import UIKit
 
-class SpeechBubble: UIView {
+enum SpeechBubbleType {
+	case outgoing
+	case incoming
+}
+
+class SpeechBubbleView: UIView {
 	
-	var color:UIColor = UIColor.gray
+	lazy var color:UIColor = UIColor(hexString: "#88e306")
+	
+	var type: SpeechBubbleType = .incoming
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -29,16 +36,15 @@ class SpeechBubble: UIView {
 	}
 	
 	override func draw(_ rect: CGRect) {
-		
 		let rounding:CGFloat = 6
 		
-		//Draw the main frame
+		let bubbleFrameXPosition: CGFloat = (self.type == .outgoing) ? 0 : 5
 		
-		let bubbleFrame = CGRect(x: 0, y: 0, width: rect.width - 5, height: rect.height)
+		// Draw the main frame
+		let bubbleFrame = CGRect(x: bubbleFrameXPosition, y: 0, width: rect.width - 5, height: rect.height)
 		let bubblePath = UIBezierPath(roundedRect: bubbleFrame, byRoundingCorners: UIRectCorner.allCorners, cornerRadii: CGSize(width: rounding, height: rounding))
 		
 		//Color the bubbleFrame
-		
 		color.setStroke()
 		color.setFill()
 		bubblePath.stroke()
@@ -48,9 +54,15 @@ class SpeechBubble: UIView {
 		context!.beginPath()
 		
 		//Draw a tail
-		context!.move(to: CGPoint(x: bubbleFrame.maxX, y: bubbleFrame.maxY - 22))
-		context!.addLine(to: CGPoint(x: bubbleFrame.maxX + 5, y: bubbleFrame.maxY - 17))
-		context!.addLine(to: CGPoint(x: bubbleFrame.maxX, y: bubbleFrame.maxY - 12))
+		if self.type == .outgoing {
+			context!.move(to: CGPoint(x: bubbleFrame.maxX, y: bubbleFrame.maxY - 22))
+			context!.addLine(to: CGPoint(x: bubbleFrame.maxX + 5, y: bubbleFrame.maxY - 17))
+			context!.addLine(to: CGPoint(x: bubbleFrame.maxX, y: bubbleFrame.maxY - 12))
+		} else {
+			context!.move(to: CGPoint(x: bubbleFrame.minX, y: bubbleFrame.maxY - 22))
+			context!.addLine(to: CGPoint(x: bubbleFrame.minX - 5, y: bubbleFrame.maxY - 17))
+			context!.addLine(to: CGPoint(x: bubbleFrame.minX, y: bubbleFrame.maxY - 12))
+		}
 		
 		context!.closePath()
 		

@@ -30,14 +30,6 @@
                                 <color key="textColor" red="0.39215686274509803" green="0.46666666666666667" blue="0.52941176470588236" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="insetX">
-                                        <real key="value" value="10"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="insetY">
-                                        <real key="value" value="10"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="m1J-QR-dOJ" customClass="PaddedTextField" customModule="LIGChatApp" customModuleProvider="target">
                                 <rect key="frame" x="10" y="154" width="355" height="40"/>
@@ -77,10 +69,18 @@
                                 </attributedString>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0JR-rx-duh" customClass="SpeechBubble" customModule="LIGChatApp" customModuleProvider="target">
+                                <rect key="frame" x="20" y="582" width="335" height="65"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="65" id="uuI-Rf-dtj"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="n1K-iR-giQ" secondAttribute="trailing" constant="10" id="ASZ-kE-xmt"/>
+                            <constraint firstItem="0JR-rx-duh" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="Dsy-Lb-I5O"/>
                             <constraint firstItem="m1J-QR-dOJ" firstAttribute="top" secondItem="15e-LH-OuZ" secondAttribute="bottom" constant="20" id="Dzc-4m-UMZ"/>
                             <constraint firstItem="FBa-KK-Y0Y" firstAttribute="top" secondItem="n1K-iR-giQ" secondAttribute="bottom" constant="20" id="EkD-YJ-cF8"/>
                             <constraint firstItem="n1K-iR-giQ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="10" id="EnV-cT-yHP"/>
@@ -91,6 +91,8 @@
                             <constraint firstItem="15e-LH-OuZ" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="30" id="dOK-Ne-OVg"/>
                             <constraint firstAttribute="trailing" secondItem="FBa-KK-Y0Y" secondAttribute="trailing" constant="10" id="jhc-tL-yrW"/>
                             <constraint firstItem="15e-LH-OuZ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="10" id="n1T-uo-Vz9"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="0JR-rx-duh" secondAttribute="bottom" constant="20" id="pog-J7-ccr"/>
+                            <constraint firstAttribute="trailing" secondItem="0JR-rx-duh" secondAttribute="trailing" constant="20" id="tkx-dK-re0"/>
                             <constraint firstItem="m1J-QR-dOJ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="10" id="vAV-Ce-mDf"/>
                         </constraints>
                     </view>
@@ -131,7 +133,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xKd-5I-n0N" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="898" y="33"/>
+            <point key="canvasLocation" x="898" y="156"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="HJc-RJ-5aU">
@@ -167,7 +169,77 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0X6-zg-3h8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="142" y="33"/>
+            <point key="canvasLocation" x="142" y="156"/>
+        </scene>
+        <!--Chat app-->
+        <scene sceneID="MD9-sb-B3B">
+            <objects>
+                <viewController storyboardIdentifier="ChatCollectionViewController" id="XxY-EW-dmh" customClass="ChatCollectionViewController" customModule="LIGChatApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="5m9-Iu-njT"/>
+                        <viewControllerLayoutGuide type="bottom" id="mIa-yr-LPF"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="7Cm-Bj-73J">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="4kr-CG-fPI">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="AXN-0Q-fm8">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                                <connections>
+                                    <outlet property="dataSource" destination="XxY-EW-dmh" id="NBj-Qx-8B9"/>
+                                    <outlet property="delegate" destination="XxY-EW-dmh" id="0X8-LO-RoZ"/>
+                                </connections>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="4kr-CG-fPI" firstAttribute="leading" secondItem="7Cm-Bj-73J" secondAttribute="leading" id="SPJ-4W-Lrw"/>
+                            <constraint firstItem="4kr-CG-fPI" firstAttribute="top" secondItem="5m9-Iu-njT" secondAttribute="bottom" id="hBI-5P-0x9"/>
+                            <constraint firstAttribute="trailing" secondItem="4kr-CG-fPI" secondAttribute="trailing" id="jEH-pv-15p"/>
+                            <constraint firstItem="mIa-yr-LPF" firstAttribute="top" secondItem="4kr-CG-fPI" secondAttribute="bottom" id="kxw-9e-WkB"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Chat app" id="Za7-re-gJa">
+                        <barButtonItem key="rightBarButtonItem" title="Logout" id="gW3-EQ-tkr">
+                            <connections>
+                                <action selector="logoutButtonAction:" destination="XxY-EW-dmh" id="cky-ff-Uou"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="collectionView" destination="4kr-CG-fPI" id="kPE-X3-QgJ"/>
+                        <outlet property="logoutButton" destination="gW3-EQ-tkr" id="k3I-IB-aNv"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CFK-Mc-bcj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="896.79999999999995" y="859.52023988005999"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="bR8-1D-5dG">
+            <objects>
+                <navigationController storyboardIdentifier="ChatCollectionNavController" automaticallyAdjustsScrollViewInsets="NO" id="Xvd-az-MFw" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="STt-nB-OWy">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="XxY-EW-dmh" kind="relationship" relationship="rootViewController" id="RXj-jA-L2g"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wPP-4i-oLs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="142" y="860"/>
         </scene>
     </scenes>
 </document>

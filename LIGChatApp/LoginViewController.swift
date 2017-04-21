@@ -47,7 +47,7 @@ class LoginViewController: UIViewController {
 		
 		authHandle = FIRAuth.auth()?.addStateDidChangeListener() { (auth, user) in
 			print("STATE DID CHANGE AUTH")
-			print(user?.email)
+			print(user?.email ?? "email test")
 		}
 	}
 	

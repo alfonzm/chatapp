@@ -65,6 +65,9 @@ class ChatViewController: JSQMessagesViewController {
 		textView.layer.borderColor = UIColor.clear.cgColor
 		
 		// initialize bubble images
+//		self.outgoingCellIdentifier = CustomOutgoingCollectionViewCell.cellReuseIdentifier();
+//		self.collectionView.register(CustomOutgoingCollectionViewCell.nib(), forCellWithReuseIdentifier: self.outgoingCellIdentifier)
+
 		let bubbleImageFactory = JSQMessagesBubbleImageFactory()
 		let greenBubbleColor = UIColor(hexString: "#88e306")
 		self.outgoingBubbleImage = bubbleImageFactory!.outgoingMessagesBubbleImage(with: greenBubbleColor)
@@ -126,9 +129,9 @@ class ChatViewController: JSQMessagesViewController {
 	
 //	override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 //		let cell = collectionView.cellForItem(at: indexPath) as? JSQMessagesCollectionViewCell
-//		cell.
+//		cell?.cellBottomLabel.text = "HANO"
 //		
-//		return cell
+//		return cell!
 //	}
 
 	override func collectionView(_ collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAt indexPath: IndexPath!) -> JSQMessageBubbleImageDataSource! {
