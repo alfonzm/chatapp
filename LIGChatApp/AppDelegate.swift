@@ -19,6 +19,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		// Override point for customization after application launch.
 		
 		FIRApp.configure()
+		
+		self.window = UIWindow(frame: UIScreen.main.bounds)
+		
+		let storyboard = UIStoryboard(name: "Main", bundle: nil)
+		
+		var initialViewController: UIViewController?
+		
+		// Set the initial view if there's a logged in user
+		if FIRAuth.auth()?.currentUser != nil {
+			initialViewController = storyboard.instantiateViewController(withIdentifier: "ChatNavController")
+		} else {
+			initialViewController = storyboard.instantiateViewController(withIdentifier: "LoginNavController")
+		}
+		
+		self.window?.rootViewController = initialViewController!
+		self.window?.makeKeyAndVisible()
+		
 		return true
 	}
 

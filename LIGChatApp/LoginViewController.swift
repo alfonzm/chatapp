@@ -33,23 +33,21 @@ class LoginViewController: UIViewController {
 		// Change corner radius for text fields
 		usernameTextField.layer.cornerRadius = 5
 		passwordTextField.layer.cornerRadius = 5
-		
-		// Check if there is a currently logged in user
-		if let loggedInUser = FIRAuth.auth()?.currentUser {
-			print("LOGGED IN")
-			print(loggedInUser.email)
-		} else {
-			print("not logged in")
-		}
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
+		// Check if there is a currently logged in user
+//		if FIRAuth.auth()?.currentUser != nil {
+//			self.performSegue(withIdentifier: "LoginToChat", sender: nil)
+//		} else {
+//			print("not logged in")
+//		}
+		
 		authHandle = FIRAuth.auth()?.addStateDidChangeListener() { (auth, user) in
 			print("STATE DID CHANGE AUTH")
-			print(auth)
-			print(user)
+			print(user?.email)
 		}
 	}
 	
@@ -70,14 +68,13 @@ class LoginViewController: UIViewController {
 			let email = "\(username)@ligchatapp.com"
 			
 			FIRAuth.auth()?.signIn(withEmail: email, password: password) { (user, error) in
-				print("SIGN IN")
-				
-				if let user = user {
-					print(user.uid)
-					print(user.email)
-					self.performSegue(withIdentifier: "LoginToChat", sender: nil)
+				if user != nil {
+					// Login successful
+					let chatNavController = self.storyboard!.instantiateViewController(withIdentifier: "ChatNavController") as! UINavigationController
+					
+					self.present(chatNavController, animated: false, completion: nil)
 				} else if error != nil {
-					// Alert user for incorrect credentials
+					// Login failed, alert user for incorrect credentials
 					let alertController = UIAlertController(title: "Please try again", message:"The username or password you entered did not match our records. Please double-check and try again.", preferredStyle: .alert)
 					
 					let tryAgainAction = UIAlertAction(title: "Try Again", style: .cancel, handler: nil)
@@ -131,15 +128,6 @@ class LoginViewController: UIViewController {
 			enableSignupLoginButton()
 		} else {
 			disableSignupLoginButton()
-		}
-	}
-	
-	// MARK: Navigation
-	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		if let chatViewController = segue.destination as? ChatViewController {
-			let loggedInUser = FIRAuth.auth()?.currentUser
-			chatViewController.senderId = loggedInUser!.uid
-			chatViewController.senderDisplayName = loggedInUser!.email
 		}
 	}
 }

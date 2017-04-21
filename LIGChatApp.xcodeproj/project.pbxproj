@@ -13,6 +13,7 @@
 		93105AFA1EA656EB001505D7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93105AF81EA656EB001505D7 /* LaunchScreen.storyboard */; };
 		9349D35F1EA6588500FFD6CB /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 9349D35E1EA6588500FFD6CB /* Podfile */; };
 		9352481D1EA661910015F822 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9352481C1EA661910015F822 /* LoginViewController.swift */; };
+		93730CC61EA9951D009189FF /* SpeechBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93730CC51EA9951D009189FF /* SpeechBubble.swift */; };
 		93B7BEF91EA72CED00D2ACB7 /* PaddedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B7BEF81EA72CED00D2ACB7 /* PaddedTextField.swift */; };
 		93BBDE7D1EA8985C003DC88F /* LoaderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BBDE7C1EA8985C003DC88F /* LoaderButton.swift */; };
 		93DA703E1EA7657B005F5D74 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 93DA703D1EA7657B005F5D74 /* GoogleService-Info.plist */; };
@@ -32,6 +33,7 @@
 		93105AFB1EA656EB001505D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9349D35E1EA6588500FFD6CB /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9352481C1EA661910015F822 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		93730CC51EA9951D009189FF /* SpeechBubble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeechBubble.swift; sourceTree = "<group>"; };
 		93B7BEF81EA72CED00D2ACB7 /* PaddedTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaddedTextField.swift; sourceTree = "<group>"; };
 		93BBDE7C1EA8985C003DC88F /* LoaderButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoaderButton.swift; sourceTree = "<group>"; };
 		93DA703D1EA7657B005F5D74 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -99,6 +101,7 @@
 			children = (
 				93B7BEF81EA72CED00D2ACB7 /* PaddedTextField.swift */,
 				93BBDE7C1EA8985C003DC88F /* LoaderButton.swift */,
+				93730CC51EA9951D009189FF /* SpeechBubble.swift */,
 			);
 			name = models;
 			sourceTree = "<group>";
@@ -240,6 +243,7 @@
 				9352481D1EA661910015F822 /* LoginViewController.swift in Sources */,
 				93B7BEF91EA72CED00D2ACB7 /* PaddedTextField.swift in Sources */,
 				93DA70401EA7961F005F5D74 /* ChatViewController.swift in Sources */,
+				93730CC61EA9951D009189FF /* SpeechBubble.swift in Sources */,
 				93105AF01EA656EB001505D7 /* AppDelegate.swift in Sources */,
 				93BBDE7D1EA8985C003DC88F /* LoaderButton.swift in Sources */,
 			);
