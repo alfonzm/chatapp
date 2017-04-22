@@ -9,6 +9,8 @@
 import UIKit
 import FirebaseDatabase
 import FirebaseAuth
+import GSMessages
+import JSQSystemSoundPlayer
 
 class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITextViewDelegate {
 	@IBOutlet weak var collectionView: UICollectionView!
@@ -28,8 +30,25 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 	var senderDisplayName: String = ""
 	let placeholderText = "Start a new message"
 	
+	// UI dimensions for chat bubbles
+	let labelVerticalPadding: CGFloat = 7
+	let labelHorizontalPadding: CGFloat = 10
+	let tailWidth: CGFloat = 5
+	let bubbleMargin: CGFloat = 5
+	
     override func viewDidLoad() {
-        super.viewDidLoad()
+		super.viewDidLoad()
+		
+		// Set current Firebase user
+		let currentUser = FIRAuth.auth()?.currentUser
+		self.senderId = currentUser!.uid
+		self.senderDisplayName = currentUser!.email!.replacingOccurrences(of: "@ligchatapp.com", with: "")
+		
+		// Show signed in notification message
+		GSMessage.font = UIFont.boldSystemFont(ofSize: 14)
+		self.showMessage("Signed in as \(self.senderDisplayName)", type: .success, options:[
+			.textPadding(20.0)
+		])
 		
 		// setup textview placeholder
 		self.messageTextView.delegate = self
@@ -56,11 +75,6 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 		// style the text view
 		self.messageTextView.layer.cornerRadius = 5
 		
-		// Set current Firebase user
-		let currentUser = FIRAuth.auth()?.currentUser
-		self.senderId = currentUser!.uid
-		self.senderDisplayName = currentUser!.email!.replacingOccurrences(of: "@ligchatapp.com", with: "")
-		
 		// Firebase messages reference
 		self.messagesRef = FIRDatabase.database().reference().child("messages")
 		
@@ -73,13 +87,15 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 		// Register collection view cell
 		self.collectionView.register(UINib(nibName: "MessageBubbleCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: self.reuseIdentifier)
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+	
+	// On change orientation, reload and layout the collection view
+	override func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
+		self.collectionView.reloadData()
 	}
 	
 	// MARK: UITextView delegate
+	// Used for manual placeholder functionality for TextView
 	func textViewDidBeginEditing(_ textView: UITextView) {
 		if self.messageTextView.text == placeholderText {
 			self.messageTextView.text = ""
@@ -106,45 +122,47 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 		
 		let message = self.messages[indexPath.item]
 		
+		// set message
 		cell.messageLabel.text = message.text
-		cell.senderNameLabel.text = message.senderName
 		
-		let size = CGSize(width: 200, height: 1000)
-		let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
-		let estimatedFrame = NSString(string: message.text).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 14)], context: nil)
+		// Get the estimated frame of the message label so we can
+		// dynamically set the width and height of the message bubble
+		let estimatedFrame = self.getEstimatedFrameOfMessageLabel(text: message.text)
 		
-		let labelVerticalPadding: CGFloat = 7
-		let labelHorizontalPadding: CGFloat = 10
-		let tailWidth: CGFloat = 5
-		let bubbleMargin: CGFloat = 5
-		
-		// Check if message is outgoing or incoming
 		var messageLabelXPosition: CGFloat = labelHorizontalPadding
 		var messageBubbleXPosition: CGFloat = bubbleMargin
 		var messageSenderXPosition: CGFloat = messageBubbleXPosition
 		
+		// Check if message is outgoing or incoming
 		if self.senderId == message.senderId {
 			cell.messageBubbleView.type = .outgoing
+			cell.senderNameLabel.text = "You"
 			
-			// if outgoing, align the bubble to the right
+			// if outgoing, align right
 			messageBubbleXPosition = self.view.frame.width - estimatedFrame.width - (labelHorizontalPadding * 2) - tailWidth - bubbleMargin
 			messageSenderXPosition = messageBubbleXPosition
-			
 			
 			cell.senderNameLabel.textAlignment = .right
 		} else {
 			cell.messageBubbleView.type = .incoming
+			cell.senderNameLabel.text = message.senderName
 			
 			// add padding to message
 			messageLabelXPosition += tailWidth
 			
 			// add padding to sender name
 			messageSenderXPosition += tailWidth
+			
+			cell.senderNameLabel.textAlignment = .left
 		}
 		
 		cell.messageLabel.frame = CGRect(x: messageLabelXPosition, y: labelVerticalPadding, width: estimatedFrame.width, height: estimatedFrame.height)
 		cell.messageBubbleView.frame = CGRect(x: messageBubbleXPosition, y: 0, width: estimatedFrame.width + (labelHorizontalPadding * 2) + tailWidth, height: estimatedFrame.height + (labelVerticalPadding * 2))
-		cell.senderNameLabel.frame = CGRect(x: 10, y: cell.messageBubbleView.frame.maxY + 5, width: self.view.frame.width - 20, height: 14)
+		cell.senderNameLabel.frame = CGRect(x: 10, y: cell.messageBubbleView.frame.maxY + 4, width: self.view.frame.width - 20, height: 14)
+		
+		// force redraw frames
+		cell.messageBubbleView.setNeedsDisplay()
+		cell.senderNameLabel.setNeedsDisplay()
 		
 //		cell.backgroundColor = UIColor.cyan
 		
@@ -152,12 +170,13 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize {
-		let messageText = self.messages[indexPath.item].text
-		let size = CGSize(width: 200, height: 1000)
-		let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
-		let estimatedFrame = NSString(string: messageText).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 14)], context: nil)
 		
-		return CGSize(width: view.frame.width, height: estimatedFrame.height + 40)
+		// Get the estimated frame of the message label so we can
+		// dynamically set the width and height of the message bubble
+		let messageText = self.messages[indexPath.item].text
+		let estimatedFrame = self.getEstimatedFrameOfMessageLabel(text: messageText)
+		
+		return CGSize(width: view.frame.width, height: estimatedFrame.height + (labelVerticalPadding * 2) + 40)
 	}
 	
 	public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -173,14 +192,19 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 		let messageText: String = self.messageTextView.text
 		self.addMessage(withString: messageText, senderId: self.senderId, name: self.senderDisplayName)
 		
+		// Add the message to the Firebase database
 		let itemRef = messagesRef!.childByAutoId()
 		let messageItem = [
 			"username": self.senderDisplayName,
 			"senderId": self.senderId,
 			"text": messageText,
 			]
-		
-		itemRef.setValue(messageItem)
+//		itemRef.setValue(messageItem)
+		itemRef.setValue(messageItem, withCompletionBlock: { (error, ref) -> Void in
+			if error == nil {
+				print("SUCCESS")
+			}
+		})
 		
 		finishSendingMessage()
 		
@@ -194,10 +218,12 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 		// Show confirm logout prompt
 		let confirmLogoutAlert = UIAlertController(title: "Confirm Logout", message: "Are you sure you want to logout?", preferredStyle: UIAlertControllerStyle.alert)
 		
+		// Cancel logout action
 		confirmLogoutAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
 			self.navigationItem.rightBarButtonItem?.isEnabled = true
 		}))
 		
+		// Confirm logout action
 		confirmLogoutAlert.addAction(UIAlertAction(title: "Log out", style: .destructive, handler: { (action: UIAlertAction!) in
 			do {
 				try FIRAuth.auth()?.signOut()
@@ -257,10 +283,18 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 	
 	
 	// MARK: Helper/utility functions
+	private func getEstimatedFrameOfMessageLabel(text: String) -> CGRect {
+		let size = CGSize(width: 550, height: 1000)
+		let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
+		return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 14)], context: nil)
+	}
+	
+	// Called everytime a new message is added to the thread, to reload the collection view
 	private func finishSendingMessage() {
 		self.collectionView.reloadData()
 	}
 	
+	// Scrolls the thread to the bottom, called on initial load or everytime a new message is added
 	private func scrollToBottomMessage(_ animated: Bool = false) {
 		let lastIndex = self.collectionView.numberOfItems(inSection: 0) - 1
 		if lastIndex > 0 {

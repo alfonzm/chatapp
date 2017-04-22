@@ -15,7 +15,8 @@ enum SpeechBubbleType {
 
 class SpeechBubbleView: UIView {
 	
-	lazy var color:UIColor = UIColor(hexString: "#88e306")
+		lazy var color:UIColor = UIColor(hexString: "#88e306")
+//		lazy var color:UIColor = UIColor.clear
 	
 	var type: SpeechBubbleType = .incoming
 	

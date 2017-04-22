@@ -53,10 +53,4 @@ class MessageBubbleCollectionViewCell: UICollectionViewCell {
 		self.addSubview(messageBubbleView)
 		self.addSubview(senderNameLabel)
 	}
-	
-	override func prepareForReuse() {
-		super.prepareForReuse()
-		
-		print("reuse \(messageLabel.text)")
-	}
 }
