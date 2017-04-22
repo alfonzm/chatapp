@@ -6,6 +6,8 @@
 //  Copyright © 2017 alphonsus. All rights reserved.
 //
 
+//	A custom UIView used for chat message bubbles
+
 import UIKit
 
 enum SpeechBubbleType {
@@ -15,9 +17,7 @@ enum SpeechBubbleType {
 
 class SpeechBubbleView: UIView {
 	
-		lazy var color:UIColor = UIColor(hexString: "#88e306")
-//		lazy var color:UIColor = UIColor.clear
-	
+	lazy var color:UIColor = UIColor.chatColor.green
 	var type: SpeechBubbleType = .incoming
 	
 	override init(frame: CGRect) {

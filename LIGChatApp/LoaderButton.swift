@@ -6,6 +6,9 @@
 //  Copyright © 2017 alphonsus. All rights reserved.
 //
 
+//	A UIButton extension that can show/hide a loading activity indicator
+//	e.g. button.showLoading() or button.hideLoading()
+
 import UIKit
 
 class LoaderButton: UIButton {
@@ -50,5 +53,4 @@ class LoaderButton: UIButton {
 		let yCenterConstraint = NSLayoutConstraint(item: self, attribute: .centerY, relatedBy: .equal, toItem: activityIndicator, attribute: .centerY, multiplier: 1, constant: 0)
 		self.addConstraint(yCenterConstraint)
 	}
-	
 }

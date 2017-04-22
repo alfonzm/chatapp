@@ -33,23 +33,68 @@ class LoginViewController: UIViewController {
 		// Change corner radius for text fields
 		usernameTextField.layer.cornerRadius = 5
 		passwordTextField.layer.cornerRadius = 5
-    }
+	}
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		
-		authHandle = FIRAuth.auth()?.addStateDidChangeListener() { (auth, user) in
-			print("STATE DID CHANGE AUTH")
-			print(user?.email ?? "email test")
+	// Sign in to Firebase account with email and password
+	private func attemptSignIn(email: String, password: String) {
+		FIRAuth.auth()?.signIn(withEmail: email, password: password) { (user, error) in
+			if user != nil {
+				// Login successful
+				self.presentChatView()
+			} else if error != nil {
+				// User not found, alert user to create new account
+				let createAccountAlert = UIAlertController(title: "Create Account?", message:"The username or password you entered did not match our records. Would you like to sign up this account?", preferredStyle: .alert)
+				
+				createAccountAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
+					self.enableSignupLoginButton()
+					self.signupOrLoginButton.hideLoading()
+				}))
+				
+				
+				createAccountAlert.addAction(UIAlertAction(title: "Sign Up", style: .default, handler: { (action: UIAlertAction!) in
+					self.attemptCreateAccount(email: email, password: password)
+				}))
+				
+				self.present(createAccountAlert, animated: true, completion: nil)
+				
+			}
 		}
 	}
 	
-	override func viewWillDisappear(_ animated: Bool) {
-		super.viewWillDisappear(animated)
-		
-		FIRAuth.auth()?.removeStateDidChangeListener(authHandle!)
+	// Create account with email and password
+	private func attemptCreateAccount(email: String, password: String) {
+		FIRAuth.auth()?.createUser(withEmail: email, password: password, completion: { (user, error) in
+			if user != nil {
+				self.presentChatView()
+			} else if error != nil {
+				var errorMessage: String = ""
+				if let errCode = FIRAuthErrorCode(rawValue: error!._code) {
+					switch errCode {
+					case .errorCodeInvalidEmail:
+						errorMessage = "The username you entered contains invalid characters. Please try again."
+						
+					case .errorCodeEmailAlreadyInUse:
+						errorMessage = "The e-mail address is already in use."
+						
+					case .errorCodeWeakPassword:
+						errorMessage = "Please enter a password with at least 6 characters."
+						
+					default:
+						errorMessage = "There was a problem signing up your account. Please try again."
+					}
+				}
+				
+				let signupErrorAlert = UIAlertController(title: "Sign Up Unsuccessful", message: errorMessage, preferredStyle: .alert)
+				signupErrorAlert.addAction(UIAlertAction(title: "Try Again", style: .cancel, handler: nil))
+				self.present(signupErrorAlert, animated: true, completion: nil)
+				
+				self.enableSignupLoginButton()
+				self.signupOrLoginButton.hideLoading()
+			}
+		})
 	}
 	
+	// MARK: IBActions
 	@IBAction func tapSignupOrLoginButton(_ sender: Any) {
 		disableSignupLoginButton()
 		signupOrLoginButton.showLoading()
@@ -60,57 +105,7 @@ class LoginViewController: UIViewController {
 			let password = passwordTextField.text!
 			let email = "\(username)@ligchatapp.com"
 			
-			FIRAuth.auth()?.signIn(withEmail: email, password: password) { (user, error) in
-				if user != nil {
-					// Login successful
-					self.presentChatView()
-				} else if error != nil {
-					// User not found, alert user to create new account
-					let createAccountAlert = UIAlertController(title: "Create Account?", message:"The username or password you entered did not match our records. Would you like to sign up this account?", preferredStyle: .alert)
-					
-					
-					createAccountAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
-						self.enableSignupLoginButton()
-						self.signupOrLoginButton.hideLoading()
-					}))
-					
-					createAccountAlert.addAction(UIAlertAction(title: "Sign Up", style: .default, handler: { (action: UIAlertAction!) in
-						FIRAuth.auth()?.createUser(withEmail: email, password: password, completion: { (user, error) in
-							if user != nil {
-								self.presentChatView()
-							} else if error != nil {
-								print(error)
-								
-								var errorMessage: String = ""
-								if let errCode = FIRAuthErrorCode(rawValue: error!._code) {
-									switch errCode {
-									case .errorCodeInvalidEmail:
-										errorMessage = "The username you entered contains invalid characters. Please try again."
-										
-									case .errorCodeEmailAlreadyInUse:
-										errorMessage = "The e-mail address is already in use."
-										
-									case .errorCodeWeakPassword:
-										errorMessage = "Please enter a password with at least 6 characters."
-										
-									default:
-										print("There was a problem signing up your account. Please try again.")
-									}
-								}
-								
-								let signupErrorAlert = UIAlertController(title: "Sign Up Unsuccessful", message: errorMessage, preferredStyle: .alert)
-								signupErrorAlert.addAction(UIAlertAction(title: "Try Again", style: .cancel, handler: nil))
-								self.present(signupErrorAlert, animated: true, completion: nil)
-								
-								self.enableSignupLoginButton()
-								self.signupOrLoginButton.hideLoading()
-							}
-						})
-					}))
-					
-					self.present(createAccountAlert, animated: true, completion: nil)
-				}
-			}
+			self.attemptSignIn(email: email, password: password)
 		} else {
 			// Alert user that username or password field is empty
 			let alertController = UIAlertController(title: "Please try again", message:"Please enter a username and password.", preferredStyle: .alert)

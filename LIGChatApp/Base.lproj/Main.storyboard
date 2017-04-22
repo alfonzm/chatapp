@@ -28,7 +28,7 @@
                                     <constraint firstAttribute="height" constant="40" id="jlx-hR-qDf"/>
                                 </constraints>
                                 <color key="textColor" red="0.26666666666666666" green="0.32549019607843138" blue="0.38039215686274508" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="m1J-QR-dOJ" customClass="PaddedTextField" customModule="LIGChatApp" customModuleProvider="target">
@@ -38,7 +38,7 @@
                                     <constraint firstAttribute="height" constant="40" id="Y1c-Qy-BkX"/>
                                 </constraints>
                                 <color key="textColor" red="0.26666666666666666" green="0.32549019607843138" blue="0.38039215686274508" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="go" secureTextEntry="YES"/>
                             </textField>
                             <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n1K-iR-giQ" customClass="LoaderButton" customModule="LIGChatApp" customModuleProvider="target">
@@ -107,34 +107,6 @@
             </objects>
             <point key="canvasLocation" x="898.39999999999998" y="-645.42728635682158"/>
         </scene>
-        <!--Chat app-->
-        <scene sceneID="spX-V9-lcw">
-            <objects>
-                <viewController storyboardIdentifier="ChatViewController" id="g3v-zr-dXk" customClass="ChatViewController" customModule="LIGChatApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="OBP-Yz-68U"/>
-                        <viewControllerLayoutGuide type="bottom" id="SFQ-n2-b5x"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="0Or-uK-nNh">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Chat app" id="40x-wd-ard">
-                        <barButtonItem key="rightBarButtonItem" title="Logout" id="Dhb-Fm-3bz">
-                            <connections>
-                                <action selector="logoutButtonAction:" destination="g3v-zr-dXk" id="XpO-9q-Owx"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="logoutButton" destination="Dhb-Fm-3bz" id="Sv4-sP-vmA"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="xKd-5I-n0N" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="898" y="156"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="HJc-RJ-5aU">
             <objects>
@@ -152,24 +124,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o5V-4H-NHf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="141.59999999999999" y="-645.42728635682158"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="5JF-7z-U34">
-            <objects>
-                <navigationController storyboardIdentifier="ChatNavController" automaticallyAdjustsScrollViewInsets="NO" id="kR1-zt-7kI" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Pxw-Bc-Y6d">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="g3v-zr-dXk" kind="relationship" relationship="rootViewController" id="W0F-z2-JCr"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="0X6-zg-3h8" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="142" y="156"/>
         </scene>
         <!--Chat app-->
         <scene sceneID="MD9-sb-B3B">
@@ -212,7 +166,7 @@
                                                 <fragment content="send">
                                                     <attributes>
                                                         <color key="NSColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <font key="NSFont" size="14" name=".AppleSystemUIFont"/>
+                                                        <font key="NSFont" size="13" name=".AppleSystemUIFont"/>
                                                     </attributes>
                                                 </fragment>
                                             </attributedString>
@@ -225,7 +179,7 @@
                                         <rect key="frame" x="10" y="10" width="297" height="28"/>
                                         <color key="backgroundColor" red="0.96078431372549022" green="0.97254901960784312" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="textColor" red="0.26666666666666666" green="0.32549019607843138" blue="0.38039215686274508" alpha="1" colorSpace="calibratedRGB"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no"/>
                                     </textView>
                                 </subviews>
@@ -270,7 +224,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CFK-Mc-bcj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="896.79999999999995" y="859.52023988005999"/>
+            <point key="canvasLocation" x="897" y="39"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="bR8-1D-5dG">
@@ -288,7 +242,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wPP-4i-oLs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="142" y="860"/>
+            <point key="canvasLocation" x="142" y="39"/>
         </scene>
     </scenes>
 </document>

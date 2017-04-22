@@ -10,7 +10,6 @@ import UIKit
 import FirebaseDatabase
 import FirebaseAuth
 import GSMessages
-import JSQSystemSoundPlayer
 
 class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITextViewDelegate {
 	@IBOutlet weak var collectionView: UICollectionView!
@@ -21,6 +20,7 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 	let reuseIdentifier = "messageBubbleCell"
 
 	// Firebase stuff
+	var initialDataLoaded = false
 	var messagesRef: FIRDatabaseReference?
 	var messagesRefHandle: FIRDatabaseHandle?
 	
@@ -30,19 +30,14 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 	var senderDisplayName: String = ""
 	let placeholderText = "Start a new message"
 	
-	// UI dimensions for chat bubbles
-	let labelVerticalPadding: CGFloat = 7
-	let labelHorizontalPadding: CGFloat = 10
-	let tailWidth: CGFloat = 5
-	let bubbleMargin: CGFloat = 5
-	
     override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		// Set current Firebase user
-		let currentUser = FIRAuth.auth()?.currentUser
-		self.senderId = currentUser!.uid
-		self.senderDisplayName = currentUser!.email!.replacingOccurrences(of: "@ligchatapp.com", with: "")
+		// Setup authenticated user, messages, etc
+		setupFirebase()
+		
+		// Register collection view cell
+		self.collectionView.register(UINib(nibName: "MessageBubbleCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: self.reuseIdentifier)
 		
 		// Show signed in notification message
 		GSMessage.font = UIFont.boldSystemFont(ofSize: 14)
@@ -50,43 +45,56 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 			.textPadding(20.0)
 		])
 		
-		// setup textview placeholder
+		// Setup textview placeholder
 		self.messageTextView.delegate = self
 		self.setTextViewToPlaceholder()
 		
-		// create a custom logout button
-		let customLogoutButton: UIButton = UIButton(type: .custom)
-		customLogoutButton.setTitle("Log out", for: .normal)
-		customLogoutButton.layer.backgroundColor = UIColor(hexString: "#535353").cgColor
-		customLogoutButton.setTitle("Log out", for: .normal)
-		customLogoutButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
-		customLogoutButton.layer.cornerRadius = 8
-		customLogoutButton.frame = CGRect(x: 0, y: 0, width: 67, height: 28)
+		// Create the custom logout button
+		setupCustomLogoutButton()
 		
-		customLogoutButton.addTarget(self, action: #selector(logoutButtonAction), for: .touchUpInside)
-		
-		let logoutBarButtonItem = UIBarButtonItem(customView: customLogoutButton)
-		self.navigationItem.rightBarButtonItem = logoutBarButtonItem
-		
-		// style the send button
-		self.sendButton.layer.cornerRadius = 8
-		self.sendButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
-		
-		// style the text view
+		// Add corner radiuses
+		self.sendButton.layer.cornerRadius = 5
 		self.messageTextView.layer.cornerRadius = 5
+    }
+	
+	private func setupFirebase() {
+		// Set current Firebase user
+		let currentUser = FIRAuth.auth()?.currentUser
+		self.senderId = currentUser!.uid
+		self.senderDisplayName = currentUser!.email!.replacingOccurrences(of: "@ligchatapp.com", with: "")
 		
-		// Firebase messages reference
+		// Setup messages from Firebase
 		self.messagesRef = FIRDatabase.database().reference().child("messages")
 		
-		// load existing messages
-		loadMessages()
-		
-		// observe for new messages
 		observeMessages()
+		loadMessages()
+	}
+	
+	private func setupCustomLogoutButton() {
+		// create a custom button
+		let customLogoutButton: UIButton = LoaderButton(type: .custom)
 		
-		// Register collection view cell
-		self.collectionView.register(UINib(nibName: "MessageBubbleCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: self.reuseIdentifier)
-    }
+		customLogoutButton.setTitle("Log out", for: .normal)
+		customLogoutButton.setTitleColor(UIColor.gray, for: .focused)
+		customLogoutButton.setTitleColor(UIColor.gray, for: .disabled)
+		customLogoutButton.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: UIFontWeightSemibold)
+		
+		customLogoutButton.layer.cornerRadius = 5
+		customLogoutButton.layer.backgroundColor = UIColor.chatColor.gray.cgColor
+		
+		customLogoutButton.frame = CGRect(x: 0, y: 0, width: 67, height: 28)
+		
+		// add logout action
+		customLogoutButton.addTarget(self, action: #selector(logoutButtonAction), for: .touchUpInside)
+		
+		// reduce right margin of logout button
+		let logoutBarButtonItem = UIBarButtonItem(customView: customLogoutButton)
+		let negativeSpace: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
+		negativeSpace.width = -8
+		
+		// set the right bar button item
+		self.navigationItem.setRightBarButtonItems([negativeSpace, logoutBarButtonItem], animated: false)
+	}
 	
 	// On change orientation, reload and layout the collection view
 	override func viewDidLayoutSubviews() {
@@ -122,61 +130,19 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 		
 		let message = self.messages[indexPath.item]
 		
-		// set message
-		cell.messageLabel.text = message.text
-		
-		// Get the estimated frame of the message label so we can
-		// dynamically set the width and height of the message bubble
-		let estimatedFrame = self.getEstimatedFrameOfMessageLabel(text: message.text)
-		
-		var messageLabelXPosition: CGFloat = labelHorizontalPadding
-		var messageBubbleXPosition: CGFloat = bubbleMargin
-		var messageSenderXPosition: CGFloat = messageBubbleXPosition
-		
-		// Check if message is outgoing or incoming
-		if self.senderId == message.senderId {
-			cell.messageBubbleView.type = .outgoing
-			cell.senderNameLabel.text = "You"
-			
-			// if outgoing, align right
-			messageBubbleXPosition = self.view.frame.width - estimatedFrame.width - (labelHorizontalPadding * 2) - tailWidth - bubbleMargin
-			messageSenderXPosition = messageBubbleXPosition
-			
-			cell.senderNameLabel.textAlignment = .right
-		} else {
-			cell.messageBubbleView.type = .incoming
-			cell.senderNameLabel.text = message.senderName
-			
-			// add padding to message
-			messageLabelXPosition += tailWidth
-			
-			// add padding to sender name
-			messageSenderXPosition += tailWidth
-			
-			cell.senderNameLabel.textAlignment = .left
-		}
-		
-		cell.messageLabel.frame = CGRect(x: messageLabelXPosition, y: labelVerticalPadding, width: estimatedFrame.width, height: estimatedFrame.height)
-		cell.messageBubbleView.frame = CGRect(x: messageBubbleXPosition, y: 0, width: estimatedFrame.width + (labelHorizontalPadding * 2) + tailWidth, height: estimatedFrame.height + (labelVerticalPadding * 2))
-		cell.senderNameLabel.frame = CGRect(x: 10, y: cell.messageBubbleView.frame.maxY + 4, width: self.view.frame.width - 20, height: 14)
-		
-		// force redraw frames
-		cell.messageBubbleView.setNeedsDisplay()
-		cell.senderNameLabel.setNeedsDisplay()
-		
-//		cell.backgroundColor = UIColor.cyan
+		cell.setMessage(message, senderId: self.senderId, viewWidth: self.view.frame.width)
 		
 		return cell
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize {
-		
+
 		// Get the estimated frame of the message label so we can
 		// dynamically set the width and height of the message bubble
 		let messageText = self.messages[indexPath.item].text
-		let estimatedFrame = self.getEstimatedFrameOfMessageLabel(text: messageText)
+		let estimatedFrame = ChatCollectionViewController.getEstimatedFrameOfMessageLabel(text: messageText)
 		
-		return CGSize(width: view.frame.width, height: estimatedFrame.height + (labelVerticalPadding * 2) + 40)
+		return CGSize(width: view.frame.width, height: estimatedFrame.height + (7 * 2) + 40)
 	}
 	
 	public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -190,7 +156,7 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 	// MARK: IBActions
 	@IBAction func sendButtonAction(_ sender: Any) {
 		let messageText: String = self.messageTextView.text
-		self.addMessage(withString: messageText, senderId: self.senderId, name: self.senderDisplayName)
+//		self.addMessage(withString: messageText, senderId: self.senderId, name: self.senderDisplayName)
 		
 		// Add the message to the Firebase database
 		let itemRef = messagesRef!.childByAutoId()
@@ -199,21 +165,14 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 			"senderId": self.senderId,
 			"text": messageText,
 			]
-//		itemRef.setValue(messageItem)
-		itemRef.setValue(messageItem, withCompletionBlock: { (error, ref) -> Void in
-			if error == nil {
-				print("SUCCESS")
-			}
-		})
 		
-		finishSendingMessage()
+		itemRef.setValue(messageItem)
 		
 		self.messageTextView.text = ""
 	}
 	
 	@IBAction func logoutButtonAction(_ sender: Any) {
 		self.navigationItem.rightBarButtonItem?.isEnabled = false
-		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.lightGray], for: .normal)
 		
 		// Show confirm logout prompt
 		let confirmLogoutAlert = UIAlertController(title: "Confirm Logout", message: "Are you sure you want to logout?", preferredStyle: UIAlertControllerStyle.alert)
@@ -252,15 +211,18 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 	// Observes new messages added and adds them to the chat thread
 	private func observeMessages() {
 		self.messagesRefHandle = self.messagesRef?.observe(.childAdded, with: { (snapshot) -> Void in
-			if let snapshots = snapshot.children.allObjects as? [FIRDataSnapshot] {
-				for snap in snapshots {
-					if let messageDict = snap.value as? Dictionary<String, AnyObject> {
-						self.addMessage(withMessageDict: messageDict)
-					}
-				}
-				self.finishSendingMessage()
-				self.scrollToBottomMessage(true)
+			
+			// check if initial data is loaded, since we want this
+			// function to run only for newly added messages
+			if !self.initialDataLoaded {
+				return
 			}
+			
+			if let messageDict = snapshot.value as? Dictionary<String, AnyObject> {
+				self.addMessage(withMessageDict: messageDict)
+			}
+			self.finishSendingMessage()
+			self.scrollToBottomMessage(true)
 		})
 	}
 	
@@ -268,12 +230,15 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 	private func loadMessages () {
 		self.messagesRef?.observeSingleEvent(of: .value, with: { (snapshot) -> Void in
 			if let snapshots = snapshot.children.allObjects as? [FIRDataSnapshot] {
+				
+				// Add all the messages to the chat
 				for snap in snapshots {
 					if let messageDict = snap.value as? Dictionary<String, AnyObject> {
 						self.addMessage(withMessageDict: messageDict)
 					}
 				}
 				
+				self.initialDataLoaded = true
 				self.activityIndicator.stopAnimating()
 				self.finishSendingMessage()
 				self.scrollToBottomMessage()
@@ -281,12 +246,11 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 		})
 	}
 	
-	
 	// MARK: Helper/utility functions
-	private func getEstimatedFrameOfMessageLabel(text: String) -> CGRect {
+	public static func getEstimatedFrameOfMessageLabel(text: String) -> CGRect {
 		let size = CGSize(width: 550, height: 1000)
 		let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
-		return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 14)], context: nil)
+		return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: MessageBubbleCollectionViewCell.messageDefaultFont], context: nil)
 	}
 	
 	// Called everytime a new message is added to the thread, to reload the collection view
@@ -303,15 +267,18 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 		}
 	}
 	
+	// Add a new message bubble to chat with string
 	private func addMessage(withString text: String, senderId: String, name: String) {
 		let newMessage = Message(text: text, senderId: senderId, senderName: name)
 		messages.append(newMessage)
 	}
 	
+	// Add a new message bubble to chat with a message dictionary
 	private func addMessage(withMessageDict message: Dictionary<String,AnyObject>) {
-		let messageText = message["text"] as! String
-		let messageUsername = message["username"] as! String
-		let messageSenderId = message["senderId"] as! String
-		self.addMessage(withString: messageText, senderId: messageSenderId, name: messageUsername)
+		if let messageText = message["text"] as? String,
+			let messageUsername = message["username"] as? String,
+			let messageSenderId = message["senderId"] as? String {
+			self.addMessage(withString: messageText, senderId: messageSenderId, name: messageUsername)
+		}
 	}
 }

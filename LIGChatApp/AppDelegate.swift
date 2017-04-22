@@ -25,16 +25,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		
 		let storyboard = UIStoryboard(name: "Main", bundle: nil)
 		
-		var initialViewController: UIViewController?
+		var initialViewController: String = ""
 		
 		// Set the initial view if there's a logged in user
 		if FIRAuth.auth()?.currentUser != nil {
-			initialViewController = storyboard.instantiateViewController(withIdentifier: "ChatCollectionNavController")
+			initialViewController = "ChatCollectionNavController"
 		} else {
-			initialViewController = storyboard.instantiateViewController(withIdentifier: "LoginNavController")
+			initialViewController = "LoginNavController"
 		}
 		
-		self.window?.rootViewController = initialViewController!
+		self.window?.rootViewController = storyboard.instantiateViewController(withIdentifier: initialViewController)
 		self.window?.makeKeyAndVisible()
 		
 		// enable keyboard manager

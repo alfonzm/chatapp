@@ -2,11 +2,11 @@
 //  PaddedTextField.swift
 //  LIGChatApp
 //
-//	A custom text field with padding
-//
 //  Created by Alfonz Montelibano on 4/19/17.
 //  Copyright © 2017 alphonsus. All rights reserved.
 //
+
+//	A plain UITextField but with 10 padding
 
 import UIKit
 

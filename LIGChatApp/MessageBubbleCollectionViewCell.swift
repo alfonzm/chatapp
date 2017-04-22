@@ -10,9 +10,17 @@ import UIKit
 
 class MessageBubbleCollectionViewCell: UICollectionViewCell {
 	
+	static var messageDefaultFont: UIFont = UIFont.systemFont(ofSize: 14, weight: UIFontWeightMedium)
+
+	// UI dimensions for chat bubbles
+	let labelVerticalPadding: CGFloat = 7
+	let labelHorizontalPadding: CGFloat = 10
+	let tailWidth: CGFloat = 5
+	let bubbleMargin: CGFloat = 5
+	
 	let messageLabel: UILabel = {
 		let label = UILabel()
-		label.font = UIFont.systemFont(ofSize: 14)
+		label.font = messageDefaultFont
 		label.numberOfLines = 0
 		label.textColor = UIColor.white
 		label.lineBreakMode = .byWordWrapping
@@ -29,9 +37,9 @@ class MessageBubbleCollectionViewCell: UICollectionViewCell {
 	
 	let senderNameLabel: UILabel = {
 		let label = UILabel()
-		label.font = UIFont.systemFont(ofSize: 14)
+		label.font = messageDefaultFont
 		label.numberOfLines = 1
-		label.textColor = UIColor(hexString: "#445361")
+		label.textColor = UIColor.chatColor.textDark
 		return label
 	}()
 	
@@ -52,5 +60,49 @@ class MessageBubbleCollectionViewCell: UICollectionViewCell {
 		self.messageBubbleView.addSubview(messageLabel)
 		self.addSubview(messageBubbleView)
 		self.addSubview(senderNameLabel)
+	}
+	
+	public func setMessage(_ message: Message, senderId: String, viewWidth: CGFloat) {
+		// set message
+		self.messageLabel.text = message.text
+		
+		// Get the estimated frame of the message label so we can
+		// dynamically set the width and height of the message bubble
+		let estimatedFrame = ChatCollectionViewController.getEstimatedFrameOfMessageLabel(text: message.text)
+		
+		var messageLabelXPosition: CGFloat = labelHorizontalPadding
+		var messageBubbleXPosition: CGFloat = bubbleMargin
+		var messageSenderXPosition: CGFloat = messageBubbleXPosition
+		
+		// Check if message is outgoing or incoming
+		if senderId == message.senderId {
+			self.messageBubbleView.type = .outgoing
+			self.senderNameLabel.text = "You"
+			
+			// if outgoing, align right
+			messageBubbleXPosition = viewWidth - estimatedFrame.width - (labelHorizontalPadding * 2) - tailWidth - 3
+			messageSenderXPosition = messageBubbleXPosition
+			
+			self.senderNameLabel.textAlignment = .right
+		} else {
+			self.messageBubbleView.type = .incoming
+			self.senderNameLabel.text = message.senderName
+			
+			// add padding to message
+			messageLabelXPosition += tailWidth
+			
+			// add padding to sender name
+			messageSenderXPosition += tailWidth
+			
+			self.senderNameLabel.textAlignment = .left
+		}
+		
+		self.messageLabel.frame = CGRect(x: messageLabelXPosition, y: labelVerticalPadding, width: estimatedFrame.width, height: estimatedFrame.height)
+		self.messageBubbleView.frame = CGRect(x: messageBubbleXPosition, y: 0, width: estimatedFrame.width + (labelHorizontalPadding * 2) + tailWidth, height: estimatedFrame.height + (labelVerticalPadding * 2))
+		self.senderNameLabel.frame = CGRect(x: 10, y: self.messageBubbleView.frame.maxY + 4, width: viewWidth - 20, height: 14)
+		
+		// force redraw frames
+		self.messageBubbleView.setNeedsDisplay()
+		self.senderNameLabel.setNeedsDisplay()
 	}
 }
