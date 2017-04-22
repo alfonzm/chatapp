@@ -29,6 +29,7 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 	var senderId: String = ""
 	var senderDisplayName: String = ""
 	let placeholderText = "Start a new message"
+	var canSendMessage: Bool = false
 	
     override func viewDidLoad() {
 		super.viewDidLoad()
@@ -109,6 +110,8 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 			self.messageTextView.text = ""
 		}
 		
+		self.canSendMessage = true
+		
 		self.messageTextView.becomeFirstResponder()
 	}
 	
@@ -116,6 +119,8 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 		if self.messageTextView.text == "" {
 			self.setTextViewToPlaceholder()
 		}
+		
+		self.canSendMessage = false
 	}
 	
 	func setTextViewToPlaceholder() {
@@ -155,6 +160,10 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 	
 	// MARK: IBActions
 	@IBAction func sendButtonAction(_ sender: Any) {
+		if !self.canSendMessage {
+			return
+		}
+		
 		let messageText: String = self.messageTextView.text
 //		self.addMessage(withString: messageText, senderId: self.senderId, name: self.senderDisplayName)
 		
