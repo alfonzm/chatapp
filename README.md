@@ -4,6 +4,8 @@
 
 # simple chat app
 
+![screenshot1](screen1.png) ![screenshot2](screen2.png)
+
 A simple chat application for iOS powered by a Firebase backend.
 
 ## Features
