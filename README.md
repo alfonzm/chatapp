@@ -19,6 +19,8 @@ A simple chat application for iOS powered by a Firebase backend.
 Make sure you have [CocoaPods](https://cocoapods.org/) installed.
 
 ```
+$ git clone https://github.com/alfonzm/ios-chatapp.git
+$ cd ios-chatapp
 $ pod install
 ```
 
