@@ -29,7 +29,7 @@
                                 </constraints>
                                 <color key="textColor" red="0.26666666666666666" green="0.32549019607843138" blue="0.38039215686274508" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="insetY">
                                         <real key="value" value="10"/>
