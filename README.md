@@ -1,6 +1,8 @@
-# simple chat app
+<p align="center">
+  <img src="logo.png">
+</p>
 
-![logo](logo.png)
+# simple chat app
 
 A simple chat application for iOS powered by a Firebase backend.
 
