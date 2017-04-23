@@ -10,7 +10,6 @@ import UIKit
 import FirebaseDatabase
 import FirebaseAuth
 import GSMessages
-import RSKPlaceholderTextView
 
 class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITextViewDelegate {
 	@IBOutlet weak var collectionView: UICollectionView!

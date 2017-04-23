@@ -7,5 +7,4 @@ target 'LIGChatApp' do
 	pod 'Firebase/Auth'
 	pod 'IQKeyboardManagerSwift', '4.0.8'
 	pod 'GSMessages'
-	pod 'RSKGrowingTextView'
 end
