@@ -99,7 +99,7 @@ class MessageBubbleCollectionViewCell: UICollectionViewCell {
 		
 		self.messageLabel.frame = CGRect(x: messageLabelXPosition, y: labelVerticalPadding, width: estimatedFrame.width, height: estimatedFrame.height)
 		self.messageBubbleView.frame = CGRect(x: messageBubbleXPosition, y: 0, width: estimatedFrame.width + (labelHorizontalPadding * 2) + tailWidth, height: estimatedFrame.height + (labelVerticalPadding * 2))
-		self.senderNameLabel.frame = CGRect(x: 10, y: self.messageBubbleView.frame.maxY + 4, width: viewWidth - 20, height: 14)
+		self.senderNameLabel.frame = CGRect(x: 10, y: self.messageBubbleView.frame.maxY + 4, width: viewWidth - 20, height: 16)
 		
 		// force redraw frames
 		self.messageBubbleView.setNeedsDisplay()

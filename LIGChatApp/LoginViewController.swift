@@ -25,7 +25,7 @@ class LoginViewController: UIViewController {
 		
 		// By default, signup/login button is disabled until
 		// username and pass fields are not empty
-		disableSignupLoginButton()
+		self.signupOrLoginButton.disable()
 		
 		// Rounded corners for button
 		self.signupOrLoginButton.layer.cornerRadius = 5
@@ -46,7 +46,7 @@ class LoginViewController: UIViewController {
 				let createAccountAlert = UIAlertController(title: "Create Account?", message:"The username or password you entered did not match our records. Would you like to sign up this account?", preferredStyle: .alert)
 				
 				createAccountAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
-					self.enableSignupLoginButton()
+					self.signupOrLoginButton.enable()
 					self.signupOrLoginButton.hideLoading()
 				}))
 				
@@ -88,7 +88,7 @@ class LoginViewController: UIViewController {
 				signupErrorAlert.addAction(UIAlertAction(title: "Try Again", style: .cancel, handler: nil))
 				self.present(signupErrorAlert, animated: true, completion: nil)
 				
-				self.enableSignupLoginButton()
+				self.signupOrLoginButton.enable()
 				self.signupOrLoginButton.hideLoading()
 			}
 		})
@@ -96,7 +96,7 @@ class LoginViewController: UIViewController {
 	
 	// MARK: IBActions
 	@IBAction func tapSignupOrLoginButton(_ sender: Any) {
-		disableSignupLoginButton()
+		self.signupOrLoginButton.disable()
 		signupOrLoginButton.showLoading()
 		
 		// Check that username and password fields are not empty
@@ -115,7 +115,7 @@ class LoginViewController: UIViewController {
 			
 			self.present(alertController, animated: true, completion: nil)
 			
-			self.enableSignupLoginButton()
+			self.signupOrLoginButton.enable()
 			self.signupOrLoginButton.hideLoading()
 		}
 	}
@@ -136,24 +136,12 @@ class LoginViewController: UIViewController {
 		return false
 	}
 	
-	func enableSignupLoginButton() {
-		signupOrLoginButton.isEnabled = true
-		signupOrLoginButton.isUserInteractionEnabled = true
-		signupOrLoginButton.alpha = 1
-	}
-	
-	func disableSignupLoginButton() {
-		signupOrLoginButton.isEnabled = false
-		signupOrLoginButton.isUserInteractionEnabled = false
-		signupOrLoginButton.alpha = 0.5
-	}
-	
 	// Called when username and password textfields are edited, used to enable or disable the signup/login button
 	func usernamePasswordFieldEdited(_ textField: UITextField) {
 		if isUsernameAndPasswordFieldsNotEmpty() {
-			enableSignupLoginButton()
+			self.signupOrLoginButton.enable()
 		} else {
-			disableSignupLoginButton()
+			self.signupOrLoginButton.disable()
 		}
 	}
 }

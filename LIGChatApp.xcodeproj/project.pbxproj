@@ -16,6 +16,7 @@
 		93460C721EAA0EA3009AC601 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93460C711EAA0EA3009AC601 /* Message.swift */; };
 		9349D35F1EA6588500FFD6CB /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 9349D35E1EA6588500FFD6CB /* Podfile */; };
 		9352481D1EA661910015F822 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9352481C1EA661910015F822 /* LoginViewController.swift */; };
+		936C28511EAC610100078873 /* UIButton+EnableDisable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936C28501EAC610100078873 /* UIButton+EnableDisable.swift */; };
 		93730CC61EA9951D009189FF /* SpeechBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93730CC51EA9951D009189FF /* SpeechBubbleView.swift */; };
 		93730CD31EA9D5FF009189FF /* ChatCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93730CD21EA9D5FF009189FF /* ChatCollectionViewController.swift */; };
 		93730CDE1EA9FA47009189FF /* MessageBubbleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93730CDC1EA9FA47009189FF /* MessageBubbleCollectionViewCell.swift */; };
@@ -42,6 +43,7 @@
 		93460C711EAA0EA3009AC601 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		9349D35E1EA6588500FFD6CB /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9352481C1EA661910015F822 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		936C28501EAC610100078873 /* UIButton+EnableDisable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+EnableDisable.swift"; sourceTree = "<group>"; };
 		93730CC51EA9951D009189FF /* SpeechBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeechBubbleView.swift; sourceTree = "<group>"; };
 		93730CD21EA9D5FF009189FF /* ChatCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatCollectionViewController.swift; sourceTree = "<group>"; };
 		93730CDC1EA9FA47009189FF /* MessageBubbleCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBubbleCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 			children = (
 				9337802D1EAB3AC0008D0602 /* UIColor+HexString.swift */,
 				933780301EABA95F008D0602 /* UIColor+CustomColors.swift */,
+				936C28501EAC610100078873 /* UIButton+EnableDisable.swift */,
 			);
 			name = extensions;
 			sourceTree = "<group>";
@@ -286,6 +289,7 @@
 				93105AF01EA656EB001505D7 /* AppDelegate.swift in Sources */,
 				93BBDE7D1EA8985C003DC88F /* LoaderButton.swift in Sources */,
 				93FAAA041EAA6E5F00C2824E /* BorderedTopView.swift in Sources */,
+				936C28511EAC610100078873 /* UIButton+EnableDisable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

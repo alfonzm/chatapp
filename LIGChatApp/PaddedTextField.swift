@@ -10,9 +10,10 @@
 
 import UIKit
 
+@IBDesignable
 class PaddedTextField: UITextField {
-	let insetX: CGFloat = 10
-	let insetY: CGFloat = 10
+	@IBInspectable var insetX: CGFloat = 10
+	@IBInspectable var insetY: CGFloat = 10
 	
 	// Add padding to placeholder
 	override func textRect(forBounds bounds: CGRect) -> CGRect {
@@ -22,5 +23,14 @@ class PaddedTextField: UITextField {
 	// Add padding to editable text
 	override func editingRect(forBounds bounds: CGRect) -> CGRect {
 		return bounds.insetBy(dx: insetX , dy: insetY)
+	}
+	
+	@IBInspectable var placeHolderColor: UIColor? {
+		get {
+			return self.placeHolderColor
+		}
+		set {
+			self.attributedPlaceholder = NSAttributedString(string:self.placeholder != nil ? self.placeholder! : "", attributes:[NSForegroundColorAttributeName: newValue!])
+		}
 	}
 }
