@@ -12,9 +12,9 @@ import FirebaseAuth
 import GSMessages
 import RSKPlaceholderTextView
 
-class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITextViewDelegate {
 	@IBOutlet weak var collectionView: UICollectionView!
-	@IBOutlet weak var messageTextField: UITextField!
+	@IBOutlet weak var messageTextView: UITextView!
 	@IBOutlet weak var sendButton: UIButton!
 	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 	
@@ -51,10 +51,12 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 		
 		// Add corner radiuses
 		self.sendButton.layer.cornerRadius = 5
-		self.messageTextField.layer.cornerRadius = 5
+		self.messageTextView.layer.cornerRadius = 5
 		
-		// Add listener to chat message edited
-		self.messageTextField.addTarget(self, action: #selector(messageTextFieldEdited), for: .editingChanged)
+		// Add placeholder logic for text view
+		self.messageTextView.delegate = self
+		self.messageTextView.textContainerInset = UIEdgeInsets(top: 5, left: 4, bottom: 5, right: 5)
+		self.setTextViewToPlaceholder()
 		self.sendButton.disable()
     }
 	
@@ -103,14 +105,32 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 		self.collectionView.reloadData()
 	}
 	
-	
-	// MARK: UITextField enable/disable the send button
-	func messageTextFieldEdited(_ textView: UITextView) {
-		if textView.text == "" {
-			sendButton.disable()
-		} else {
-			sendButton.enable()
+	// MARK: UITextView delegate
+	// Used for manual placeholder functionality for TextView
+	func textViewDidBeginEditing(_ textView: UITextView) {
+		if self.messageTextView.text == placeholderText {
+			self.messageTextView.text = ""
 		}
+		
+		self.messageTextView.becomeFirstResponder()
+	}
+	
+	func textViewDidEndEditing(_ textView: UITextView) {
+		if self.messageTextView.text == "" {
+			self.setTextViewToPlaceholder()
+		}
+	}
+	
+	func textViewDidChange(_ textView: UITextView) {
+		if self.messageTextView.text == "" {
+			self.sendButton.disable()
+		} else {
+			self.sendButton.enable()
+		}
+	}
+	
+	func setTextViewToPlaceholder() {
+		self.messageTextView.text = placeholderText
 	}
 
 	// MARK: UICollectionViewDataSource 
@@ -145,7 +165,7 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 	
 	// MARK: IBActions
 	@IBAction func sendButtonAction(_ sender: Any) {
-		let messageText: String = self.messageTextField.text ?? ""
+		let messageText: String = self.messageTextView.text
 		
 		// Add the message to the Firebase database
 		let itemRef = messagesRef!.childByAutoId()
@@ -157,7 +177,7 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 		
 		itemRef.setValue(messageItem)
 		
-		self.messageTextField.text = ""
+		self.messageTextView.text = ""
 		self.sendButton.disable()
 	}
 	

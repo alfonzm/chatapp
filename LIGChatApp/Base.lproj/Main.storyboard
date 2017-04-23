@@ -177,27 +177,6 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2K9-tg-Ihn" customClass="BorderedTopView" customModule="LIGChatApp" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="555" width="375" height="48"/>
                                 <subviews>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Start a new message" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mWM-7t-bft" customClass="PaddedTextField" customModule="LIGChatApp" customModuleProvider="target">
-                                        <rect key="frame" x="10" y="10" width="297" height="28"/>
-                                        <color key="backgroundColor" red="0.96078431372549022" green="0.96862745098039216" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
-                                        <color key="textColor" red="0.2666666667" green="0.32549019610000002" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
-                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="insetX">
-                                                <real key="value" value="9"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="insetY">
-                                                <real key="value" value="0.0"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="placeHolderColor">
-                                                <color key="value" red="0.2666666667" green="0.32549019610000002" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <outlet property="delegate" destination="XxY-EW-dmh" id="0AQ-51-tqc"/>
-                                        </connections>
-                                    </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fTW-eP-dAZ">
                                         <rect key="frame" x="317" y="10" width="48" height="28"/>
                                         <color key="backgroundColor" red="0.32549019607843138" green="0.32549019607843138" blue="0.32549019607843138" alpha="1" colorSpace="calibratedRGB"/>
@@ -212,21 +191,28 @@
                                             <action selector="sendButtonAction:" destination="XxY-EW-dmh" eventType="touchUpInside" id="1IN-aE-mbr"/>
                                         </connections>
                                     </button>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Start a new message" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="3Ni-0W-ISp">
+                                        <rect key="frame" x="10" y="10" width="297" height="28"/>
+                                        <color key="backgroundColor" red="0.96078431372549022" green="0.96862745098039216" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="textColor" red="0.2666666667" green="0.32549019610000002" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="fTW-eP-dAZ" firstAttribute="leading" secondItem="mWM-7t-bft" secondAttribute="trailing" constant="10" id="7og-jo-QbC"/>
-                                    <constraint firstItem="mWM-7t-bft" firstAttribute="leading" secondItem="2K9-tg-Ihn" secondAttribute="leading" constant="10" id="N7W-hw-wVS"/>
-                                    <constraint firstItem="mWM-7t-bft" firstAttribute="top" secondItem="2K9-tg-Ihn" secondAttribute="top" constant="10" id="awe-qc-TDR"/>
-                                    <constraint firstAttribute="bottom" secondItem="mWM-7t-bft" secondAttribute="bottom" constant="10" id="b0C-6I-O3b"/>
+                                    <constraint firstItem="3Ni-0W-ISp" firstAttribute="leading" secondItem="2K9-tg-Ihn" secondAttribute="leading" constant="10" id="UaD-MY-1GI"/>
+                                    <constraint firstItem="fTW-eP-dAZ" firstAttribute="leading" secondItem="3Ni-0W-ISp" secondAttribute="trailing" constant="10" id="Uhf-8X-ZFQ"/>
                                     <constraint firstAttribute="trailing" secondItem="fTW-eP-dAZ" secondAttribute="trailing" constant="10" id="boa-rh-hMb"/>
+                                    <constraint firstAttribute="bottom" secondItem="3Ni-0W-ISp" secondAttribute="bottom" constant="10" id="cAK-Fd-De7"/>
                                     <constraint firstItem="fTW-eP-dAZ" firstAttribute="top" secondItem="2K9-tg-Ihn" secondAttribute="top" constant="10" id="ddF-4V-CgL"/>
+                                    <constraint firstItem="3Ni-0W-ISp" firstAttribute="top" secondItem="2K9-tg-Ihn" secondAttribute="top" constant="10" id="mj4-v3-Gsb"/>
                                     <constraint firstAttribute="bottom" secondItem="fTW-eP-dAZ" secondAttribute="bottom" constant="10" id="ozY-E5-KK2"/>
                                     <constraint firstAttribute="height" constant="48" id="sEn-8j-Ex1"/>
                                 </constraints>
                             </view>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="G6x-tt-KGE">
-                                <rect key="frame" x="177" y="267.5" width="20" height="20"/>
+                                <rect key="frame" x="177" y="268" width="20" height="20"/>
                             </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -248,13 +234,13 @@
                     <connections>
                         <outlet property="activityIndicator" destination="G6x-tt-KGE" id="mRI-Rh-ptz"/>
                         <outlet property="collectionView" destination="4kr-CG-fPI" id="kPE-X3-QgJ"/>
-                        <outlet property="messageTextField" destination="mWM-7t-bft" id="Zmv-aO-Vyg"/>
+                        <outlet property="messageTextView" destination="3Ni-0W-ISp" id="ZOK-DB-a3N"/>
                         <outlet property="sendButton" destination="fTW-eP-dAZ" id="M4a-6K-tr0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CFK-Mc-bcj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="898" y="193"/>
+            <point key="canvasLocation" x="896.79999999999995" y="192.95352323838082"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="bR8-1D-5dG">
