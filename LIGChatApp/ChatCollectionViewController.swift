@@ -257,7 +257,7 @@ class ChatCollectionViewController: UIViewController, UICollectionViewDelegate, 
 	
 	// MARK: Helper/utility functions
 	public static func getEstimatedFrameOfMessageLabel(text: String) -> CGRect {
-		let size = CGSize(width: 550, height: 1000)
+		let size = CGSize(width: 275, height: 1000)
 		let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
 		return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: MessageBubbleCollectionViewCell.messageDefaultFont], context: nil)
 	}

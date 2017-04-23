@@ -40,28 +40,55 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 	
 	// Sign in to Firebase account with email and password
 	private func attemptSignIn(email: String, password: String) {
+		
 		FIRAuth.auth()?.signIn(withEmail: email, password: password) { (user, error) in
 			if user != nil {
 				// Login successful
 				self.presentChatView()
 			} else if error != nil {
-				// User not found, alert user to create new account
-				let createAccountAlert = UIAlertController(title: "Create Account?", message:"The username or password you entered did not match our records. Would you like to sign up this account?", preferredStyle: .alert)
-				
-				createAccountAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
-					self.signupOrLoginButton.enable()
-					self.signupOrLoginButton.hideLoading()
-				}))
-				
-				
-				createAccountAlert.addAction(UIAlertAction(title: "Sign Up", style: .default, handler: { (action: UIAlertAction!) in
-					self.attemptCreateAccount(email: email, password: password)
-				}))
-				
-				self.present(createAccountAlert, animated: true, completion: nil)
-				
+				if let errCode = FIRAuthErrorCode(rawValue: error!._code) {
+					var errorMessage: String?
+					
+					switch errCode {
+					case .errorCodeUserNotFound:
+						self.promptCreateAccount(email: email, password: password)
+						
+					case .errorCodeWrongPassword:
+						errorMessage = "Incorrect username or password. Please try again."
+						
+					default:
+						errorMessage = "There was a problem loggin in to your account. Please try again."
+					}
+					
+					if let alertMessage = errorMessage {
+						let signinErrorAlert = UIAlertController(title: "Log In Unsuccessful", message: alertMessage, preferredStyle: .alert)
+						signinErrorAlert.addAction(UIAlertAction(title: "Try Again", style: .cancel, handler: nil))
+						self.present(signinErrorAlert, animated: true, completion: nil)
+						
+						self.signupOrLoginButton.enable()
+						self.signupOrLoginButton.hideLoading()
+					}
+				}
 			}
 		}
+	}
+	
+	// Prompt user to create new account
+	private func promptCreateAccount(email: String, password: String) {
+		// User not found, alert user to create new account
+		let createAccountAlert = UIAlertController(title: "Create Account?", message:"The username or password you entered did not match our records. Would you like to sign up this account?", preferredStyle: .alert)
+		
+		createAccountAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
+			self.signupOrLoginButton.enable()
+			self.signupOrLoginButton.hideLoading()
+		}))
+		
+		
+		createAccountAlert.addAction(UIAlertAction(title: "Sign Up", style: .default, handler: { (action: UIAlertAction!) in
+			self.attemptCreateAccount(email: email, password: password)
+		}))
+		
+		self.present(createAccountAlert, animated: true, completion: nil)
 	}
 	
 	// Create account with email and password
